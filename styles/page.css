@@ -1,0 +1,117 @@
+:root {
+    --bg: #000;
+    --bg-secondary: #444444;
+    --bg-tertiary: #666666;
+
+    --button-primary: #007bff;
+    --button-secondary: #6c757d;
+
+    --io-primary: #e84242;
+}
+
+body {
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    color: white;
+    font-family: "Roboto", sans-serif;
+    overflow: hidden;
+
+    display: grid;
+    grid-template-columns: 285px 1fr;
+    grid-template-rows: 5% 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+
+h1,
+h2,
+h3,
+p {
+    margin: 0;
+}
+
+.tab-content {
+    display: none;
+
+    &.active {
+        display: block;
+    }
+}
+
+#tabs {
+    height: 100%;
+    background-color: var(--bg-secondary);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    grid-area: 1 / 2 / 2 / 6;
+
+    & .tab {
+        height: 75%;
+        width: 100%;
+        font-size: 20px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+#sidebar {
+    height: 100%;
+    width: 100%;
+    grid-area: 1 / 1 / 6 / 2;
+    background-color: var(--bg-secondary);
+
+    & #sidebar-tabs {
+        width: 100%;
+        padding: 2px;
+    }
+}
+
+#content {
+    height: 100%;
+    background-color: var(--bg);
+    padding: 10px;
+    grid-area: 2 / 2 / 6 / 6;
+
+    & .tab-content {
+        height: 100%;
+        width: 100%;
+    }
+}
+
+.node {
+    padding: 7px;
+    margin: 10px;
+    background-color: var(--bg-tertiary);
+
+    & .io {
+        width: 100%;
+
+        & td.input::before,
+        td.output::after {
+            content: " ";
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--io-primary);
+            margin: 0 5px;
+        }
+
+        & .input {
+            text-align: left;
+        }
+
+        & .output {
+            text-align: right;
+        }
+    }
+
+    & button {
+        width: calc(100% - 7px);
+    }
+}

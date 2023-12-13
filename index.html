@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>factorio 2</title>
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Roboto Mono&display=swap"
+        />
+        <link rel="stylesheet" href="styles/page.css" />
+        <link rel="stylesheet" href="styles/button.css" />
+        <link rel="stylesheet" href="styles/tabs.css" />
+
+        <!-- hide favicon 404 error -->
+        <link rel="shortcut icon" href="#" />
+    </head>
+    <body>
+        <div id="sidebar">
+            <div id="sidebar-tabs">
+                <button class="tab active">Factories</button>
+                <button class="tab">Other shit</button>
+            </div>
+            <div id="sidebar-tabs-content">
+                <div class="tab-content active" id="factories"></div>
+                <div class="tab-content"><h1>Other shit</h1></div>
+            </div>
+        </div>
+        <div id="tabs">
+            <button class="tab active">Factory</button>
+            <button class="tab">Shop</button>
+            <button class="tab">Settings</button>
+        </div>
+        <div id="content">
+            <div class="tab-content active" id="factory">
+                <canvas width="100" height="100"></canvas>
+            </div>
+            <div class="tab-content"><h1>Shop</h1></div>
+            <div class="tab-content"><h1>Settings</h1></div>
+        </div>
+    </body>
+    <script src="dist/bundle.js"></script>
+</html>

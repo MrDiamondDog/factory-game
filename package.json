@@ -1,0 +1,17 @@
+{
+    "name": "factorio-2",
+    "version": "0.0.1",
+    "private": "true",
+    "scripts": {
+        "dev": "nodemon --ext \"ts,tsx,json,js\" --exec webpack"
+    },
+    "devDependencies": {
+        "eslint": "^8.55.0",
+        "nodemon": "^3.0.2",
+        "ts-loader": "^9.5.1",
+        "tsconfig-paths-webpack-plugin": "^4.1.0",
+        "typescript": "^5.3.3",
+        "webpack": "^5.89.0",
+        "webpack-cli": "^5.1.4"
+    }
+}
