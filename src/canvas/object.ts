@@ -3,10 +3,9 @@ import { weave } from "@util/array";
 import { query, queryElement } from "@util/dom";
 import { objects } from "./renderer";
 import { Camera } from "./camera";
-import { clone } from "@util/object";
 import { Mouse } from "./input";
 import { Log } from "@util/logger";
-import { colliding, drawCircle, inside, line, measureText, worldToScreen } from "@util/canvas";
+import { drawCircle, inside, line, measureText } from "@util/canvas";
 import { colors, ctx } from "@/constants";
 
 export function getWidth(options: ObjectOptions): number {
@@ -48,7 +47,12 @@ export function getIOPos(pos: Vec2, size: Vec2, i: number, inputOutput: "input" 
 }
 
 export function drawNode(self: Object) {
-    const pos = worldToScreen(self.pos);
+    const pos = Camera.screenToWorld(self.pos);
+
+    if (inside(pos, self.size, Mouse.pos)) {
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(pos.x - 3, pos.y - 3, self.size.x + 6, self.size.y + 6);
+    }
 
     ctx.fillStyle = colors.backgroundSecondary;
     ctx.fillRect(pos.x, pos.y, self.size.x, self.size.y);
@@ -62,6 +66,11 @@ export function drawNode(self: Object) {
     for (let i = 0; i < self.inputs.length; i++) {
         const inputPos = getIOPos(pos, self.size, i, "input");
 
+        if (Vec2.dist(inputPos, Mouse.pos) < 10) {
+            ctx.fillStyle = "#fff";
+            drawCircle(inputPos, 6);
+        }
+
         ctx.fillStyle = colors.ioPrimary;
         drawCircle(inputPos, 5);
 
@@ -71,6 +80,11 @@ export function drawNode(self: Object) {
 
     for (let i = 0; i < self.outputs.length; i++) {
         const outputPos = getIOPos(pos, self.size, i, "output");
+
+        if (Vec2.dist(outputPos, Mouse.pos) < 10) {
+            ctx.fillStyle = "#fff";
+            drawCircle(outputPos, 6);
+        }
 
         ctx.fillStyle = colors.ioPrimary;
         drawCircle(outputPos, 5);
@@ -104,7 +118,7 @@ export function defineNode(options: ObjectOptions) {
     queryElement<HTMLButtonElement>(container, "button").addEventListener("click", e => {
         const object: Object = {
             ...options,
-            pos: clone(Camera.pos),
+            pos: { x: 0, y: 0 },
             size: { x: getWidth(options), y: getHeight(options) },
         };
 
@@ -114,7 +128,8 @@ export function defineNode(options: ObjectOptions) {
             if (!Mouse.leftDown || Mouse.dragging) return;
 
             for (let i = 0; i < object.inputs.length; i++) {
-                if (Vec2.dist(Mouse.worldPos, { x: object.pos.x, y: object.pos.y + 47 + i * 25 }) < 10) {
+                const pos = getIOPos(object.pos, object.size, i, "input");
+                if (Vec2.dist(pos, Mouse.pos) < 10) {
                     Log("input", object.inputs[i]);
                     Camera.lock();
                     Mouse.dragging = { object, input: object.inputs[i] };
@@ -123,7 +138,8 @@ export function defineNode(options: ObjectOptions) {
             }
 
             for (let i = 0; i < object.outputs.length; i++) {
-                if (Vec2.dist(Mouse.worldPos, { x: object.pos.x + getWidth(object), y: object.pos.y + 47 + i * 25 }) < 10) {
+                const pos = getIOPos(object.pos, object.size, i, "output");
+                if (Vec2.dist(pos, Mouse.pos) < 10) {
                     Log("output", object.outputs[i]);
                     Camera.lock();
                     Mouse.dragging = { object, output: object.outputs[i] };
@@ -131,7 +147,7 @@ export function defineNode(options: ObjectOptions) {
                 }
             }
 
-            if (inside(object.pos, object.size, Mouse.worldPos)) {
+            if (inside(object.pos, object.size, Mouse.pos)) {
                 Log("node", object.name);
                 Camera.lock();
                 Mouse.dragging = { object, offset: Vec2.sub(Mouse.worldPos, object.pos) };

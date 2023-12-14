@@ -12,6 +12,10 @@ export const Mouse = {
         x: 0,
         y: 0
     } as Vec2,
+    delta: {
+        x: 0,
+        y: 0
+    } as Vec2,
     leftDown: false,
     rightDown: false,
     listener: new EventEmitter(),
@@ -20,10 +24,8 @@ export const Mouse = {
 
 elements.canvas.addEventListener("mousemove", (event: MouseEvent) => {
     Mouse.pos = { x: event.clientX - elements.canvas.offsetLeft, y: event.clientY - elements.canvas.offsetTop };
-    Mouse.worldPos = {
-        x: Mouse.pos.x + Camera.pos.x,
-        y: Mouse.pos.y + Camera.pos.y
-    };
+    Mouse.worldPos = Camera.screenToWorld(Mouse.pos);
+    Mouse.delta = { x: event.movementX, y: event.movementY };
 
     Mouse.listener.emit("move", event);
 });
@@ -50,4 +52,8 @@ elements.canvas.addEventListener("mouseup", (event: MouseEvent) => {
 
 elements.canvas.addEventListener("click", (event: MouseEvent) => {
     Mouse.listener.emit("click", event);
+});
+
+elements.canvas.addEventListener("wheel", (event: WheelEvent) => {
+    Mouse.listener.emit("wheel", event);
 });

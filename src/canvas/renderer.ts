@@ -10,18 +10,21 @@ export const objects: Object[] = [];
 
 function drawBackground() {
     ctx.fillStyle = colors.background;
-    ctx.fillRect(0, 0, elements.canvas.width, elements.canvas.height);
+    ctx.fillRect(Camera.viewport.left, Camera.viewport.top, Camera.viewport.width, Camera.viewport.height);
 
-    const gridSize = 50;
-    const gridOffset: Vec2 = {
-        x: Camera.pos.x % gridSize,
-        y: Camera.pos.y % gridSize
+    // DRAW grid of dots
+    ctx.fillStyle = colors.backgroundSecondary;
+    ctx.strokeStyle = colors.backgroundSecondary;
+
+    const gridSpacing = 100;
+    const gridOffset = {
+        x: -Camera.lookAt.x % gridSpacing,
+        y: -Camera.lookAt.y % gridSpacing
     };
 
-    ctx.fillStyle = colors.backgroundSecondary;
-    for (let x = -gridOffset.x; x < elements.canvas.width; x += gridSize) {
-        for (let y = -gridOffset.y; y < elements.canvas.height; y += gridSize) {
-            drawCircle({ x, y }, 2.5);
+    for (let x = gridOffset.x; x < elements.canvas.width; x += gridSpacing) {
+        for (let y = gridOffset.y; y < elements.canvas.height; y += gridSpacing) {
+            drawCircle(Camera.screenToWorld({ x, y }), 1);
         }
     }
 }
@@ -36,13 +39,18 @@ function resize() {
 resize();
 window.addEventListener("resize", resize);
 
-setInterval(async () => {
-    // Log("draw", "took " + await time(() => {
+function draw() {
+    Camera.begin();
+
     drawBackground();
 
     for (const object of objects) {
         drawNode(object);
-        if (object.draw) object.draw(object);
     }
-    // }).then(time => time.time + "ms"));
-}, 1000 / framerate);
+
+    Camera.end();
+
+    requestAnimationFrame(draw);
+}
+
+draw();

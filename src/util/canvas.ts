@@ -1,18 +1,10 @@
 import { ctx } from "@/constants";
-import { Camera } from "@canvas/camera";
 import { Vec2 } from "@type/canvas";
 
 export function drawCircle(pos: Vec2, radius: number) {
     ctx.beginPath();
     ctx.arc(pos.x, pos.y, radius, 0, 2 * Math.PI);
     ctx.fill();
-}
-
-export function worldToScreen(pos: Vec2) {
-    return {
-        x: pos.x - Camera.pos.x,
-        y: pos.y - Camera.pos.y
-    };
 }
 
 export function measureText(text: string): Vec2 {
