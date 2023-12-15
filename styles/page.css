@@ -115,3 +115,19 @@ p {
         width: calc(100% - 7px);
     }
 }
+
+#factories {
+    overflow-y: auto !important;
+    /* make scrollable */
+    height: 93vh;
+}
+
+ul {
+    padding-left: 20px;
+    margin: 0;
+}
+
+li {
+    padding: 0;
+    margin: 0;
+}

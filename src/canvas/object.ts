@@ -1,16 +1,18 @@
 import { Object, ObjectOptions, Vec2 } from "@type/canvas";
+import { clone } from "@util/object";
 
 export const objects: Object[] = [];
 export const registeredObjects: ObjectOptions[] = [];
 
 export const defineObject = <T extends ObjectOptions>(options: T) => {
     registeredObjects.push(options);
+    if (options.init) options.init(options);
 
     return options;
 };
 
 export const createObject = <T extends Object>(name: string, pos: Vec2 = Vec2.zero): T => {
-    const obj = registeredObjects.find(obj => obj.name === name);
+    const obj = clone(registeredObjects.find(obj => obj.name === name));
 
     if (!obj) throw new Error(`Object ${name} does not exist`);
 
@@ -22,7 +24,7 @@ export const createObject = <T extends Object>(name: string, pos: Vec2 = Vec2.ze
 
     objects.push(object);
 
-    if (object.init) object.init(object);
+    if (object.createdInit) object.createdInit(object);
 
     return object;
 };

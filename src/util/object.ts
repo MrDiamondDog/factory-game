@@ -1,3 +1,5 @@
+import { cloneDeep } from "lodash";
+
 export function clone<T>(obj: T): T {
-    return Object.assign({}, obj) as T;
+    return cloneDeep(obj);
 }

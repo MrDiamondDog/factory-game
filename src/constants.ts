@@ -16,6 +16,7 @@ export const colors = {
     backgroundTertiary: getColor("bg-tertiary"),
 
     text: "#fff",
+    textSecondary: "#aaa",
 
     ioPrimary: getColor("io-primary"),
 

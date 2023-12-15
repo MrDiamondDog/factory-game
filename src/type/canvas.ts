@@ -55,22 +55,43 @@ export const Vec2 = {
     } as Vec2
 };
 
+export type Material = "Any" | "Iron" | "Watts" | "Iron Gears";
+
+export type MaterialIO = {
+    material?: Material;
+    stored: number;
+};
+
 export type NodeOptions = {
     description: string;
-    inputs?: string[];
-    outputs?: string[];
+    inputs?: MaterialIO[];
+    outputs?: MaterialIO[];
     hidden?: boolean;
+    specs?: string[];
 } & ObjectOptions;
+
+export type ConnectionData = {
+    node: Node;
+    type: "input" | "output";
+    index: number;
+}
 
 export type Node = NodeOptions & Object & {
     size: Vec2;
+    specs: string[];
+    connections: {
+        from: ConnectionData;
+        to: ConnectionData;
+    }[]
 };
 
 export type ObjectOptions = {
     name: string;
     draw?: (self: Object) => void;
     tick?: (self: Object) => void;
-    init?: (self: Object) => void;
+    init?: (self: ObjectOptions) => void;
+    createdInit?: (self: Object) => void;
+    vars?: Record<string, any>;
 };
 
 export type Object = {
