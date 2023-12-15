@@ -1,6 +1,9 @@
-import { elements } from "@/constants";
 import { Vec2 } from "@type/canvas";
 import { EventEmitter } from "@util/eventEmitter";
+import { clone } from "@util/object";
+
+import { elements } from "@/constants";
+
 import { Camera } from "./camera";
 
 export const Mouse = {
@@ -23,9 +26,16 @@ export const Mouse = {
 };
 
 elements.canvas.addEventListener("mousemove", (event: MouseEvent) => {
-    Mouse.pos = { x: event.clientX - elements.canvas.offsetLeft, y: event.clientY - elements.canvas.offsetTop };
+    const rect = elements.canvas.getBoundingClientRect();
+
+    const oldPos = clone(Mouse.pos);
+
+    Mouse.pos.x = event.clientX - rect.left;
+    Mouse.pos.y = event.clientY - rect.top;
+
     Mouse.worldPos = Camera.screenToWorld(Mouse.pos);
-    Mouse.delta = { x: event.movementX, y: event.movementY };
+
+    Mouse.delta = Vec2.sub(Mouse.pos, oldPos);
 
     Mouse.listener.emit("move", event);
 });

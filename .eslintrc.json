@@ -2,7 +2,7 @@
     "root": true,
     "parser": "@typescript-eslint/parser",
     "ignorePatterns": ["dist", "browser"],
-    "plugins": ["@typescript-eslint", "unused-imports", "path-alias"],
+    "plugins": ["@typescript-eslint", "simple-import-sort", "unused-imports", "path-alias"],
     "rules": {
         "quotes": ["error", "double", {"avoidEscape": true}],
         "jsx-quotes": ["error", "prefer-double"],
@@ -31,12 +31,7 @@
         "no-duplicate-imports": "error",
         "no-extra-semi": "error",
         "dot-notation": "error",
-        "no-useless-escape": [
-            "error",
-            {
-                "extra": "i"
-            }
-        ],
+        "no-useless-escape": ["error"],
         "no-fallthrough": "error",
         "for-direction": "error",
         "no-async-promise-executor": "error",

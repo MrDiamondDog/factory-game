@@ -15,6 +15,8 @@ export const colors = {
     backgroundSecondary: getColor("bg-secondary"),
     backgroundTertiary: getColor("bg-tertiary"),
 
+    text: "#fff",
+
     ioPrimary: getColor("io-primary"),
 
     buttonPrimary: getColor("button-primary"),

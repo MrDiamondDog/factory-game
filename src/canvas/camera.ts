@@ -1,8 +1,9 @@
-import { Vec2 } from "@type/canvas";
 import { Mouse } from "@canvas/input";
+import { Vec2 } from "@type/canvas";
 import { Log } from "@util/logger";
-import { ctx, elements } from "@/constants";
 import { clamp } from "@util/math";
+
+import { ctx } from "@/constants";
 
 export const Camera = {
     distance: 1000,
@@ -37,15 +38,15 @@ export const Camera = {
         ctx.translate(-Camera.viewport.left, -Camera.viewport.top);
     },
     update: () => {
-        const aspect = elements.canvas.width / elements.canvas.height;
+        const aspectRatio = ctx.canvas.width / ctx.canvas.height;
         Camera.viewport.width = Camera.distance * Math.tan(Camera.fov);
-        Camera.viewport.height = Camera.viewport.width / aspect;
-        Camera.viewport.left = Camera.lookAt.x - Camera.viewport.width / 2.0;
-        Camera.viewport.top = Camera.lookAt.y - Camera.viewport.height / 2.0;
+        Camera.viewport.height = Camera.viewport.width / aspectRatio;
+        Camera.viewport.left = Camera.lookAt.x - (Camera.viewport.width / 2.0);
+        Camera.viewport.top = Camera.lookAt.y - (Camera.viewport.height / 2.0);
         Camera.viewport.right = Camera.viewport.left + Camera.viewport.width;
         Camera.viewport.bottom = Camera.viewport.top + Camera.viewport.height;
-        Camera.viewport.scale.x = elements.canvas.width / Camera.viewport.width;
-        Camera.viewport.scale.y = elements.canvas.height / Camera.viewport.height;
+        Camera.viewport.scale.x = ctx.canvas.width / Camera.viewport.width;
+        Camera.viewport.scale.y = ctx.canvas.height / Camera.viewport.height;
     },
     moveTo: (pos: Vec2) => {
         Camera.lookAt = pos;
@@ -55,13 +56,13 @@ export const Camera = {
         Camera.distance = distance;
         Camera.update();
     },
-    screenToWorld: (pos: Vec2) => {
+    screenToWorld: (pos: Vec2): Vec2 => {
         return {
-            x: pos.x / Camera.viewport.scale.x + Camera.viewport.left,
-            y: pos.y / Camera.viewport.scale.y + Camera.viewport.top
+            x: (pos.x / Camera.viewport.scale.x) + Camera.viewport.left,
+            y: (pos.y / Camera.viewport.scale.y) + Camera.viewport.top
         };
     },
-    worldToScreen: (pos: Vec2) => {
+    worldToScreen: (pos: Vec2): Vec2 => {
         return {
             x: (pos.x - Camera.viewport.left) * Camera.viewport.scale.x,
             y: (pos.y - Camera.viewport.top) * Camera.viewport.scale.y
@@ -76,7 +77,7 @@ export const Camera = {
     }
 };
 
-Mouse.listener.on("move", (event: MouseEvent) => {
+Mouse.listener.on("move", () => {
     if (Camera.locked) return;
     if (Mouse.leftDown) {
         Camera.moveTo(Vec2.sub(Camera.lookAt, Mouse.delta));
@@ -86,5 +87,5 @@ Mouse.listener.on("move", (event: MouseEvent) => {
 Mouse.listener.on("wheel", (event: WheelEvent) => {
     if (Camera.locked) return;
 
-    Camera.zoomTo(Camera.distance - event.deltaY * 20);
+    Camera.zoomTo(clamp(Camera.distance + event.deltaY, 100, 10000));
 });

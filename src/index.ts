@@ -1,6 +1,6 @@
-import { query, tabs } from "@util/dom";
 import "@canvas/renderer";
-import "@objects/index";
+
+import { query, tabs } from "@util/dom";
 
 tabs({
     buttonsContainer: query<HTMLDivElement>("#tabs"),

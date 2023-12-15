@@ -1,5 +1,6 @@
-import { ctx } from "@/constants";
 import { Vec2 } from "@type/canvas";
+
+import { ctx } from "@/constants";
 
 export function drawCircle(pos: Vec2, radius: number) {
     ctx.beginPath();

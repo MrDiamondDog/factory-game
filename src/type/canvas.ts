@@ -48,21 +48,32 @@ export const Vec2 = {
     },
     neg(a: Vec2) {
         return Vec2.scale(a, -1);
-    }
+    },
+    zero: {
+        x: 0,
+        y: 0,
+    } as Vec2
+};
+
+export type NodeOptions = {
+    description: string;
+    inputs?: string[];
+    outputs?: string[];
+    hidden?: boolean;
+} & ObjectOptions;
+
+export type Node = NodeOptions & Object & {
+    size: Vec2;
 };
 
 export type ObjectOptions = {
     name: string;
-    description: string;
-    inputs?: string[];
-    outputs?: string[];
     draw?: (self: Object) => void;
-    update?: () => void;
-    init?: () => void;
-    hidden?: boolean;
+    tick?: (self: Object) => void;
+    init?: (self: Object) => void;
 };
 
 export type Object = {
     pos: Vec2;
-    size: Vec2;
+    id: string;
 } & ObjectOptions;
