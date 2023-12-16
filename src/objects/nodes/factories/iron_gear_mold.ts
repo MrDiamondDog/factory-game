@@ -1,26 +1,27 @@
 import { defineObject } from "@canvas/object";
 import { nodeDraw, nodeInit, nodeTick } from "@objects/node";
-import { Node, NodeOptions } from "@type/canvas";
+import { Material, Node, NodeOptions } from "@type/canvas";
 
 export default defineObject<NodeOptions>({
     name: "Iron Gear Mold",
     description: "A mold for making iron gears.",
     inputs: [{
-        material: "Watts",
+        material: Material.Watts,
         stored: 0
     },
     {
-        material: "Iron",
+        material: Material.Iron,
         stored: 0
     }],
     outputs: [{
-        material: "Iron Gears",
+        material: Material.IronGear,
         stored: 0
     }],
     specs: [
-        "5w + 2 Irons -> 3 Iron Gears",
-        "Stores up to 12 iron gears"
+        "*5w* + *2 Iron* -> *3 Iron Gears*",
+        "Stores up to *12 iron gears*"
     ],
+    type: "Factories",
     init: nodeInit,
     draw: nodeDraw,
     tick: self => {

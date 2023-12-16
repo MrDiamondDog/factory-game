@@ -55,11 +55,25 @@ export const Vec2 = {
     } as Vec2
 };
 
-export type Material = "Any" | "Iron" | "Watts" | "Iron Gears";
+export enum Material {
+    Watts = "Watts",
+    Iron = "Iron",
+    IronGear = "Iron Gears",
+    Any = "Any",
+    Copper = "Copper",
+    CopperWire = "Copper Wire",
+    Circuit = "Circuit",
+    Water = "Water"
+}
 
 export type MaterialIO = {
     material?: Material;
     stored: number;
+};
+
+export type RecipeMaterial = {
+    material: Material;
+    amount: number;
 };
 
 export type NodeOptions = {
@@ -68,6 +82,8 @@ export type NodeOptions = {
     outputs?: MaterialIO[];
     hidden?: boolean;
     specs?: string[];
+    type: "Gathering" | "Energy" | "Factories" | "Other";
+    recipe?: RecipeMaterial[];
 } & ObjectOptions;
 
 export type ConnectionData = {

@@ -10,6 +10,7 @@
         />
         <link rel="stylesheet" href="styles/page.css" />
         <link rel="stylesheet" href="styles/button.css" />
+        <link rel="stylesheet" href="styles/input.css" />
         <link rel="stylesheet" href="styles/tabs.css" />
 
         <!-- hide favicon 404 error -->
@@ -19,11 +20,13 @@
         <div id="sidebar">
             <div id="sidebar-tabs">
                 <button class="tab active">Factories</button>
-                <button class="tab">Other shit</button>
+                <button class="tab">Storage</button>
             </div>
             <div id="sidebar-tabs-content">
-                <div class="tab-content active" id="factories"></div>
-                <div class="tab-content"><h1>Other shit</h1></div>
+                <div class="tab-content active" id="factories">
+                    <input placeholder="Search (use # to search type)" id="node-search" />
+                </div>
+                <div class="tab-content" id="storage"></div>
             </div>
         </div>
         <div id="tabs">

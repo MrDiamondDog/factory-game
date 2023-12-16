@@ -7,6 +7,9 @@
     --button-secondary: #6c757d;
 
     --io-primary: #e84242;
+
+    --text: #fff;
+    --text-secondary: #bbb;
 }
 
 body {
@@ -66,8 +69,25 @@ p {
     background-color: var(--bg-secondary);
 
     & #sidebar-tabs {
-        width: 100%;
-        padding: 2px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        height: 5%;
+        padding: 0 10px;
+
+        & button {
+            width: 100%;
+        }
+    }
+
+    & #sidebar-content {
+        height: 95%;
+        overflow-y: auto !important;
+    }
+
+    & #sidebar-tabs-content .tab-content {
+        padding: 10px;
     }
 }
 
@@ -85,7 +105,7 @@ p {
 
 .node {
     padding: 7px;
-    margin: 10px;
+    margin-bottom: 10px;
     background-color: var(--bg-tertiary);
 
     & .io {
@@ -118,8 +138,36 @@ p {
 
 #factories {
     overflow-y: auto !important;
-    /* make scrollable */
     height: 93vh;
+
+    & input {
+        margin-bottom: 10px;
+        width: calc(100% - 20px);
+    }
+}
+
+#storage {
+    overflow-y: auto !important;
+    height: 93vh;
+
+    & .material {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px;
+        margin: 5px;
+        background-color: var(--bg-tertiary);
+
+        & .name {
+            width: 100%;
+        }
+
+        & .amount {
+            width: 100%;
+            text-align: right;
+        }
+    }
 }
 
 ul {
@@ -130,4 +178,13 @@ ul {
 li {
     padding: 0;
     margin: 0;
+}
+
+strong {
+    text-shadow: 0 0 3px #fff;
+}
+
+.footer {
+    color: var(--text-secondary);
+    font-size: 14px;
 }

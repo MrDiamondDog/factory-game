@@ -14,6 +14,10 @@ export function queryElement<T extends HTMLElement>(from: HTMLElement, query: st
     return from.querySelector(query) as T;
 }
 
+export function queryAll<T extends HTMLElement>(query: string): T[] {
+    return Array.from(document.querySelectorAll(query)) as T[];
+}
+
 export function tabs(options: TabSettings) {
     const { tabsContainer, buttonsContainer } = options;
 

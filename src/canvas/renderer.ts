@@ -2,6 +2,7 @@ import "@objects/index";
 
 import { Camera } from "@canvas/camera";
 import { drawCircle, line } from "@util/canvas";
+import { Log } from "@util/logger";
 import { clone } from "@util/object";
 
 import { colors, ctx, elements } from "@/constants";
@@ -69,6 +70,9 @@ function resize() {
 resize();
 window.addEventListener("resize", resize);
 
+let start = Date.now();
+let ticks = 0;
+export let tps = 0;
 function draw() {
     ctx.clearRect(0, 0, elements.canvas.width, elements.canvas.height);
 
@@ -85,6 +89,17 @@ function draw() {
     }
 
     Camera.end();
+
+    ticks++;
+
+    // get tps
+    const elapsed = Date.now() - start;
+    if (elapsed >= 1000) {
+        Log("tick", `TPS: ${ticks}`);
+        tps = ticks;
+        ticks = 0;
+        start = Date.now();
+    }
 
     requestAnimationFrame(draw);
 }
