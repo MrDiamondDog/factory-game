@@ -3,7 +3,8 @@
     "version": "0.0.1",
     "private": "true",
     "scripts": {
-        "dev": "nodemon --ext \"ts,tsx,json,js\" --exec webpack"
+        "dev": "nodemon --ext \"ts,tsx,json,js\" --exec webpack",
+        "build": "webpack --mode production"
     },
     "devDependencies": {
         "@types/lodash": "^4.14.202",
