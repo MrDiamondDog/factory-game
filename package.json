@@ -2,6 +2,9 @@
     "name": "factorio-2",
     "version": "0.0.1",
     "private": "true",
+    "engines": {
+        "pnpm": "^8.6.6"
+    },
     "scripts": {
         "dev": "nodemon --ext \"ts,tsx,json,js\" --exec webpack",
         "build": "webpack --mode production"
