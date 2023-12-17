@@ -86,6 +86,8 @@ export type ExportedFactory = {
     name: string;
     id: string;
     connections: ExportedConnection[];
+    inputs?: MaterialIO[];
+    outputs?: MaterialIO[];
     pos: Vec2;
 }
 

@@ -108,7 +108,7 @@ export async function loadMachines() {
 export function save() {
     const exports = objects.map(obj => {
         const node = obj as CanvasNode;
-        const { name, pos, connections, id } = node;
+        const { name, pos, connections, id, inputs, outputs } = node;
 
         const exportedConnections = connections.map(connection => {
             const { from, to } = connection;
@@ -124,7 +124,7 @@ export function save() {
             };
         });
 
-        const definition = { name, pos, connections: exportedConnections, id } as ExportedFactory;
+        const definition = { name, pos, connections: exportedConnections, id, inputs, outputs } as ExportedFactory;
 
         return definition;
     });
@@ -144,6 +144,7 @@ export function load(data: ExportedData) {
 
     const { objects: nodes, storage, DEBUG: isDebug, TRANS } = data;
 
+    // load nodes
     for (const node of nodes) {
         const { name, pos, id } = node;
 
@@ -156,6 +157,22 @@ export function load(data: ExportedData) {
 
         const nodeInstance = objects.find(obj => obj.id === node.id) as CanvasNode;
 
+        // load ios
+        if (node.inputs) {
+            for (const input of node.inputs) {
+                const { material, stored } = input;
+                nodeInstance.inputs.find(input => input.material === material)!.stored = stored;
+            }
+        }
+
+        if (node.outputs) {
+            for (const output of node.outputs) {
+                const { material, stored } = output;
+                nodeInstance.outputs.find(output => output.material === material)!.stored = stored;
+            }
+        }
+
+        // load connections
         for (const connection of connections) {
             const { from, to } = connection;
 
@@ -175,8 +192,10 @@ export function load(data: ExportedData) {
         }
     }
 
+    // load storage
     setStorage(storage);
 
+    // load secrets
     if (isDebug) setDebug(isDebug);
     if (TRANS) {
         transFlag();
