@@ -15,6 +15,7 @@ export const ctxMenu: ContextMenuOption[] = [
             hovering.connections.forEach(connection => {
                 if (connection.to.node.inputs[connection.to.index].any) {
                     connection.to.node.inputs[connection.to.index].material = Material.Any;
+                    connection.to.node.inputs[connection.to.index].stored = 0;
                 }
             });
             deleteObject(hovering);
@@ -31,6 +32,7 @@ export const ctxMenu: ContextMenuOption[] = [
 
             if (connection.to.node.inputs[connection.to.index].any) {
                 connection.to.node.inputs[connection.to.index].material = Material.Any;
+                connection.to.node.inputs[connection.to.index].stored = 0;
             }
 
             connection.from.node.connections.splice(connection.from.index, 1);
