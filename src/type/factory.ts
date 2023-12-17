@@ -93,4 +93,5 @@ export type ExportedData = {
     objects: ExportedFactory[];
     storage: Storage;
     DEBUG?: boolean;
+    TRANS?: boolean;
 };

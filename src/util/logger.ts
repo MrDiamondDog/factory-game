@@ -29,3 +29,15 @@ export async function time(func: () => any): Promise<Timer> {
     const end = performance.now();
     return { result, time: end - start };
 }
+
+export function transFlag() {
+    const colors = [
+        "#56cefe",
+        "#f5abb6",
+        "#ffffff",
+        "#f5abb6",
+        "#56cefe",
+    ];
+
+    console.log(colors.map(color => "%c                      ").join("\n"), ...colors.map(color => `background-color: ${color}; width: 100%`));
+}

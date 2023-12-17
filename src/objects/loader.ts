@@ -3,7 +3,7 @@ import { setDebug } from "@canvas/renderer";
 import { addToStorage, clearStorage, setStorage, storage } from "@storage/global";
 import { CanvasNode, ExportedData, ExportedFactory, FactoryDefinition, Material, NodeOptions } from "@type/factory";
 import { downloadFile, query } from "@util/dom";
-import { Log } from "@util/logger";
+import { Log, transFlag } from "@util/logger";
 import { roundTo } from "@util/math";
 
 import { nodeCreatedInit, nodeDraw, nodeInit, nodeTick } from "./node";
@@ -142,7 +142,7 @@ export function load(data: ExportedData) {
     objects.length = 0;
     clearStorage();
 
-    const { objects: nodes, storage, DEBUG: isDebug } = data;
+    const { objects: nodes, storage, DEBUG: isDebug, TRANS } = data;
 
     for (const node of nodes) {
         const { name, pos, id } = node;
@@ -172,6 +172,9 @@ export function load(data: ExportedData) {
     setStorage(storage);
 
     if (isDebug) setDebug(isDebug);
+    if (TRANS) {
+        transFlag();
+    }
 }
 
 query("#save").addEventListener("click", save);
