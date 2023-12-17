@@ -12,6 +12,9 @@ export const storageContainer = query<HTMLDivElement>("#storage");
 
 export function clearStorage() {
     for (const material of Object.values(Material)) {
+        if (storage[material] !== 0)
+            storageListener.emit("change", material, 0);
+
         storage[material] = 0;
     }
     updateStorage();
@@ -19,6 +22,9 @@ export function clearStorage() {
 
 export function setStorage(newStorage: Storage) {
     for (const material of Object.values(Material)) {
+        if (storage[material] !== newStorage[material])
+            storageListener.emit("change", material, newStorage[material]);
+
         storage[material] = newStorage[material];
     }
     updateStorage();
@@ -26,6 +32,8 @@ export function setStorage(newStorage: Storage) {
 
 export function updateStorage() {
     for (const material of Object.values(Material)) {
+        if (material === Material.Watts || material === Material.Any) continue;
+        Log("storage", `Updating storage for ${material}`);
         if (storage[material])
             queryElement(storageContainer, `#material-${material.replaceAll(" ", "_")} .amount`).innerHTML = storage[material].toString();
     }
