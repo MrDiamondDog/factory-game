@@ -1,0 +1,30 @@
+{
+    "name": "Iron Gear Mold",
+    "description": "A mold for making iron gears.",
+    "inputs": ["Watts", "Iron"],
+    "outputs": ["Iron Gears"],
+    "specs": ["*5w* + *2 Iron* -> *3 Iron Gears*", "Stores up to *12 iron gears*"],
+    "recipe": [
+        {
+            "material": "Iron",
+            "amount": 10
+        }
+    ],
+    "produces": [
+        {
+            "material": "Iron Gears",
+            "amount": 3,
+            "limit": 12,
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 5
+                },
+                {
+                    "material": "Iron",
+                    "amount": 2
+                }
+            ]
+        }
+    ]
+}

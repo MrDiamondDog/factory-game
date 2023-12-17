@@ -1,14 +1,17 @@
-import "@objects/index";
-
 import { Camera } from "@canvas/camera";
+import { loadMachines } from "@objects/loader";
 import { drawCircle, line } from "@util/canvas";
 import { Log } from "@util/logger";
 import { clone } from "@util/object";
 
 import { colors, ctx, elements } from "@/constants";
 
+import { openCtxMenu } from "./contextmenu";
 import { Mouse } from "./input";
-import { objects } from "./object";
+import { createObject, objects } from "./object";
+
+export const DEBUG = true;
+export const FPS = 60;
 
 function drawBackground() {
     ctx.fillStyle = colors.backgroundSecondary;
@@ -90,6 +93,14 @@ function draw() {
 
     Camera.end();
 
+    if (DEBUG) {
+        ctx.fillStyle = colors.text;
+        ctx.strokeStyle = colors.text;
+        ctx.font = "20px monospace";
+        ctx.fillText(`Mouse: ${Mouse.pos.x}, ${Mouse.pos.y}`, 10, 10);
+        ctx.fillText(`World: ${Mouse.worldPos.x}, ${Mouse.worldPos.y}`, 10, 50);
+    }
+
     ticks++;
 
     // get tps
@@ -101,7 +112,9 @@ function draw() {
         start = Date.now();
     }
 
-    requestAnimationFrame(draw);
+    // Using setTimeout allows you to unfocus this tab and still have it run
+    // requestAnimationFrame(draw);
+    setTimeout(draw, 1000 / (FPS * 2));
 }
 
 Camera.update();
@@ -151,3 +164,21 @@ elements.canvas.addEventListener("click", (event: MouseEvent) => {
 elements.canvas.addEventListener("wheel", (event: WheelEvent) => {
     Mouse.listener.emit("wheel", event);
 });
+
+elements.canvas.addEventListener("contextmenu", (event: MouseEvent) => {
+    event.preventDefault();
+    openCtxMenu({
+        x: event.clientX,
+        y: event.clientY
+    });
+});
+
+(async () => {
+    await loadMachines();
+
+    // initial objects
+    createObject("Solar Panel", { x: -450, y: -50 });
+    createObject("Solar Panel", { x: -100, y: -200 });
+    createObject("Iron Drill", { x: -100, y: -50 });
+    createObject("Global Storage", { x: 200, y: -50 });
+})();

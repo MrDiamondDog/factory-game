@@ -1,0 +1,53 @@
+{
+    "name": "Circuit Builder",
+    "description": "An advanced machine that builds circuits.",
+    "inputs": ["Watts", "Copper", "Iron", "Copper Wire"],
+    "outputs": ["Circuit"],
+    "specs": [
+        "*50w* + *5 Copper* + *5 Iron* + *8 Copper Wire* -> *2 Circuits*",
+        "Stores up to *50 circuits*"
+    ],
+    "recipe": [
+        {
+            "material": "Iron Gears",
+            "amount": 10
+        },
+        {
+            "material": "Copper Wire",
+            "amount": 10
+        },
+        {
+            "material": "Copper",
+            "amount": 20
+        },
+        {
+            "material": "Iron",
+            "amount": 20
+        }
+    ],
+    "produces": [
+        {
+            "material": "Circuit",
+            "amount": 2,
+            "limit": 50,
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 50
+                },
+                {
+                    "material": "Copper",
+                    "amount": 5
+                },
+                {
+                    "material": "Iron",
+                    "amount": 5
+                },
+                {
+                    "material": "Copper Wire",
+                    "amount": 8
+                }
+            ]
+        }
+    ]
+}

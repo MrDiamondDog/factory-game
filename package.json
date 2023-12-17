@@ -7,7 +7,7 @@
     },
     "scripts": {
         "dev": "nodemon --ext \"ts,tsx,json,js\" --exec webpack",
-        "build": "webpack --mode production"
+        "build": "webpack --mode production --devtool false"
     },
     "devDependencies": {
         "@types/lodash": "^4.14.202",

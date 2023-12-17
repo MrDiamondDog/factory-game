@@ -1,0 +1,26 @@
+{
+    "name": "Copper Drill",
+    "description": "A more advanced drill used to mine copper.",
+    "specs": ["*10w* -> *2 Copper*", "Stores up to *100 copper*"],
+    "inputs": ["Watts"],
+    "outputs": ["Copper"],
+    "recipe": [
+        {
+            "material": "Iron",
+            "amount": 5
+        }
+    ],
+    "produces": [
+        {
+            "material": "Copper",
+            "amount": 2,
+            "limit": 100,
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 10
+                }
+            ]
+        }
+    ]
+}

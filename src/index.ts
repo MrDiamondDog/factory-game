@@ -11,3 +11,4 @@ tabs({
     buttonsContainer: query<HTMLDivElement>("#sidebar-tabs"),
     tabsContainer: query<HTMLDivElement>("#sidebar-tabs-content")
 });
+

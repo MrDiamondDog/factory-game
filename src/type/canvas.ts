@@ -55,62 +55,22 @@ export const Vec2 = {
     } as Vec2
 };
 
-export enum Material {
-    Watts = "Watts",
-    Iron = "Iron",
-    IronGear = "Iron Gears",
-    Any = "Any",
-    Copper = "Copper",
-    CopperWire = "Copper Wire",
-    Circuit = "Circuit",
-    Water = "Water"
-}
-
-export type MaterialIO = {
-    material?: Material;
-    stored: number;
-};
-
-export type RecipeMaterial = {
-    material: Material;
-    amount: number;
-};
-
-export type NodeOptions = {
-    description: string;
-    inputs?: MaterialIO[];
-    outputs?: MaterialIO[];
-    hidden?: boolean;
-    specs?: string[];
-    type: "Gathering" | "Energy" | "Factories" | "Other";
-    recipe?: RecipeMaterial[];
-} & ObjectOptions;
-
-export type ConnectionData = {
-    node: Node;
-    type: "input" | "output";
-    index: number;
-}
-
-export type Node = NodeOptions & Object & {
-    size: Vec2;
-    specs: string[];
-    connections: {
-        from: ConnectionData;
-        to: ConnectionData;
-    }[]
-};
-
 export type ObjectOptions = {
     name: string;
-    draw?: (self: Object) => void;
-    tick?: (self: Object) => void;
+    draw?: (self: CanvasObject) => void;
+    tick?: (self: CanvasObject) => void;
     init?: (self: ObjectOptions) => void;
-    createdInit?: (self: Object) => void;
+    createdInit?: (self: CanvasObject) => void;
     vars?: Record<string, any>;
 };
 
-export type Object = {
+export type CanvasObject = {
     pos: Vec2;
     id: string;
 } & ObjectOptions;
+
+export type ContextMenuOption = {
+    name: string;
+    action: () => void;
+    condition: () => boolean;
+};

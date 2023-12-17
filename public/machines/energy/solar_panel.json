@@ -1,0 +1,24 @@
+{
+    "name": "Solar Panel",
+    "description": "A crude solar panel that might generate enough power to run a drill or two.",
+    "outputs": ["Watts"],
+    "specs": ["*0.2w* / *10 ticks*", "Stores up to *100w*"],
+    "recipe": [
+        {
+            "material": "Iron",
+            "amount": 5
+        },
+        {
+            "material": "Copper Wire",
+            "amount": 2
+        }
+    ],
+    "produces": [
+        {
+            "material": "Watts",
+            "amount": 0.2,
+            "ticks": 10,
+            "limit": 100
+        }
+    ]
+}

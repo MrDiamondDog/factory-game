@@ -5,6 +5,7 @@
 
     --button-primary: #007bff;
     --button-secondary: #6c757d;
+    --button-disabled: #6c757d;
 
     --io-primary: #e84242;
 
@@ -131,6 +132,34 @@ p {
         }
     }
 
+    & .recipe {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        & .name {
+            width: 100%;
+        }
+
+        & .material {
+            width: 100%;
+        }
+
+        & .amount {
+            width: 100%;
+            text-align: right;
+        }
+
+        & tbody {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%;
+        }
+    }
+
     & button {
         width: calc(100% - 7px);
     }
@@ -187,4 +216,8 @@ strong {
 .footer {
     color: var(--text-secondary);
     font-size: 14px;
+}
+
+.ctx-menu {
+    position: absolute;
 }

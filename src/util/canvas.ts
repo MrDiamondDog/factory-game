@@ -30,3 +30,10 @@ export function line(from: Vec2, to: Vec2) {
     ctx.lineTo(to.x, to.y);
     ctx.stroke();
 }
+
+export function inLine(from: Vec2, to: Vec2, pos: Vec2) {
+    const slope = (to.y - from.y) / (to.x - from.x);
+    const yIntercept = from.y - slope * from.x;
+    const y = slope * pos.x + yIntercept;
+    return Math.abs(y - pos.y) < 10 && pos.x > Math.min(from.x, to.x) && pos.x < Math.max(from.x, to.x);
+}

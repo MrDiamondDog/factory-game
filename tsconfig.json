@@ -15,7 +15,8 @@
             "@objects/*": ["./src/objects/*"],
             "@/*": ["./src/*"],
             "@storage/*": ["./src/storage/*"]
-        }
+        },
+        "allowSyntheticDefaultImports": true
     },
     "include": ["src"]
 }

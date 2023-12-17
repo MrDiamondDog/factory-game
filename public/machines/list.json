@@ -1,0 +1,38 @@
+[
+    {
+        "file": "solar_panel.json",
+        "type": "energy"
+    },
+    {
+        "file": "iron_drill.json",
+        "type": "gathering"
+    },
+    {
+        "file": "copper_drill.json",
+        "type": "gathering"
+    },
+    {
+        "file": "global_storage.json",
+        "type": "storage"
+    },
+    {
+        "file": "basic_turbine.json",
+        "type": "energy"
+    },
+    {
+        "file": "circuit_builder.json",
+        "type": "factories"
+    },
+    {
+        "file": "water_pump.json",
+        "type": "gathering"
+    },
+    {
+        "file": "copper_wireinator.json",
+        "type": "factories"
+    },
+    {
+        "file": "iron_gear_mold.json",
+        "type": "factories"
+    }
+]

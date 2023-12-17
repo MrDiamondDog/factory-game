@@ -1,14 +1,17 @@
 import { Camera } from "@canvas/camera";
+import { ctxMenuOpen } from "@canvas/contextmenu";
 import { Mouse } from "@canvas/input";
 import { createObject, objects } from "@canvas/object";
-import { Material, Node, NodeOptions, Vec2 } from "@type/canvas";
+import { Vec2 } from "@type/canvas";
+import { CanvasNode, Material, NodeOptions } from "@type/factory";
 import { weave } from "@util/array";
-import { drawCircle, inside, line, measureText } from "@util/canvas";
+import { drawCircle, inLine, inside, line, measureText } from "@util/canvas";
 import { query, queryAll, queryElement } from "@util/dom";
-import { Log } from "@util/logger";
 import { roundTo } from "@util/math";
 
 import { colors, ctx } from "@/constants";
+import { removeFromStorage, storage, storageListener } from "@/storage/global";
+
 const container = query<HTMLDivElement>("#factories");
 
 export function getWidth(options: NodeOptions): number {
@@ -35,8 +38,6 @@ export function getWidth(options: NodeOptions): number {
     if (longest.isIO) ctx.font = "15px roboto mono";
     else ctx.font = "25px roboto mono";
 
-    Log("width", measureText(longest.str).x + 50);
-
     return measureText(longest.str).x + 50;
 }
 
@@ -51,15 +52,19 @@ export function getIOPos(pos: Vec2, size: Vec2, i: number, inputOutput: "input" 
     };
 }
 
-export function nodeDraw(self: Node) {
+export function nodeDraw(self: CanvasNode) {
     const { pos, size } = self;
 
     // outline if mouse is hovering
-    if (inside(pos, size, Mouse.worldPos)) {
+    if ((!Mouse.hovering || Mouse.hovering === self) && inside(pos, size, Mouse.worldPos)) {
         ctx.fillStyle = colors.text;
         ctx.strokeStyle = colors.text;
 
         ctx.fillRect(pos.x - 3, pos.y - 3, size.x + 6, size.y + 6);
+
+        Mouse.hovering = self;
+    } else if (Mouse.hovering === self && !ctxMenuOpen) {
+        Mouse.hovering = undefined;
     }
 
     ctx.fillStyle = colors.backgroundSecondary;
@@ -74,6 +79,37 @@ export function nodeDraw(self: Node) {
 
     ctx.font = "25px roboto mono";
     ctx.fillText(self.name, pos.x + 10, pos.y + 10);
+
+    // draw line from io if dragging
+    if (Mouse.dragging && Mouse.dragging.object === self && Mouse.dragging.io) {
+        const ioPos = getIOPos(pos, size, Mouse.dragging.io.index, Mouse.dragging.io.type);
+
+        ctx.strokeStyle = colors.ioPrimary;
+        ctx.lineWidth = 3;
+
+        line(ioPos, Mouse.worldPos);
+    }
+
+    // draw connections
+    for (const connection of self.connections) {
+        const from = getIOPos(connection.from.node.pos, connection.from.node.size, connection.from.index, connection.from.type);
+        const to = getIOPos(connection.to.node.pos, connection.to.node.size, connection.to.index, connection.to.type);
+
+        if ((!Mouse.hovering || Mouse.hovering === connection) && inLine(from, to, Mouse.worldPos)) {
+            ctx.strokeStyle = colors.text;
+            ctx.lineWidth = 7;
+            line(from, to);
+
+            Mouse.hovering = connection;
+        } else if (Mouse.hovering === connection && !ctxMenuOpen) {
+            Mouse.hovering = undefined;
+        }
+
+        ctx.strokeStyle = colors.ioPrimary;
+        ctx.lineWidth = 3;
+
+        line(from, to);
+    }
 
     // ios
     ctx.font = "15px roboto mono";
@@ -130,69 +166,122 @@ export function nodeDraw(self: Node) {
         drawCircle(ioPos, 5);
     }
     ctx.textAlign = "left";
+}
 
-    // draw line from io if dragging
-    if (Mouse.dragging && Mouse.dragging.object === self && Mouse.dragging.io) {
-        const ioPos = getIOPos(pos, size, Mouse.dragging.io.index, Mouse.dragging.io.type);
+export function nodeInit(self: NodeOptions) {
+    if (!self.inputs) self.inputs = [];
+    if (!self.outputs) self.outputs = [];
 
-        ctx.strokeStyle = colors.ioPrimary;
-        ctx.lineWidth = 3;
+    container.appendChild(nodeToHTML(self));
 
-        line(ioPos, Mouse.worldPos);
+    if (self.recipe) {
+        const craftButton = queryElement<HTMLButtonElement>(container, `#${self.name.replaceAll(" ", "_")} .node-craft`);
+
+        function updateRecipe() {
+            let canCraft = true;
+            for (const ingredient of self.recipe!) {
+                const row = queryElement(container, `#${self.name.replaceAll(" ", "_")} .${ingredient.material.replaceAll(" ", "_")}`);
+                row.querySelector(".amount")!.innerHTML = `${storage[ingredient.material].amount}/${ingredient.amount}`;
+
+                if (storage[ingredient.material].amount < ingredient.amount) canCraft = false;
+            }
+            if (canCraft) craftButton.disabled = false;
+            else craftButton.disabled = true;
+        }
+
+        self.recipe?.forEach(updateRecipe);
+        storageListener.on("change", updateRecipe);
+
+        craftButton.addEventListener("click", () => {
+            for (const ingredient of self.recipe!) {
+                removeFromStorage(ingredient.material, ingredient.amount);
+            }
+
+            queryAll<HTMLButtonElement>(".node-add").forEach(node => node.disabled = true);
+            queryAll<HTMLButtonElement>(".node-craft").forEach(node => node.disabled = true);
+
+            Mouse.listener.once("down", () => {
+                createObject<CanvasNode>(self.name, Mouse.worldPos);
+
+                queryAll<HTMLButtonElement>(".node-add").forEach(node => node.disabled = false);
+                updateRecipe();
+            });
+        });
+
+        return;
     }
 
-    // draw connections
-    ctx.strokeStyle = colors.ioPrimary;
-    ctx.lineWidth = 3;
+    const addButton = queryElement(container, `#${self.name.replaceAll(" ", "_")} .node-add`);
+    addButton.addEventListener("click", () => {
+        queryAll<HTMLButtonElement>(".node-add").forEach(node => node.disabled = true);
+        queryAll<HTMLButtonElement>(".node-craft").forEach(node => node.disabled = true);
 
-    for (const connection of self.connections) {
-        const from = getIOPos(connection.from.node.pos, connection.from.node.size, connection.from.index, connection.from.type);
-        const to = getIOPos(connection.to.node.pos, connection.to.node.size, connection.to.index, connection.to.type);
+        Mouse.listener.once("down", () => {
+            createObject<CanvasNode>(self.name, Mouse.worldPos);
 
-        line(from, to);
+            queryAll<HTMLButtonElement>(".node-add").forEach(node => node.disabled = false);
+            queryAll<HTMLButtonElement>(".node-craft").forEach(node => node.disabled = false);
+        });
+    });
+}
+
+export function nodeTick(self: CanvasNode) {
+    for (let i = 0; i < self.connections.length; i++) {
+        const connection = self.connections[i];
+        const speed = 1;
+
+        const fromConn = connection.from.node.outputs[connection.from.index];
+        const toConn = connection.to.node.inputs[connection.to.index];
+
+        if (fromConn.stored < speed) continue;
+        fromConn.stored -= speed;
+        toConn.stored += speed;
+
+        fromConn.stored = roundTo(fromConn.stored, 2);
+        toConn.stored = roundTo(toConn.stored, 2);
     }
 }
 
-export function createNode(self: NodeOptions) {
-    const object = createObject<Node>(self.name, Mouse.worldPos);
-    object.size = {
+export function nodeCreatedInit(self: CanvasNode) {
+    self.size = {
         x: getWidth(self),
         y: getHeight(self)
     };
-    object.connections = [];
+    self.connections = [];
+    self.backConnections = [];
 
     Mouse.listener.on("down", () => {
         if (!Mouse.leftDown || Mouse.dragging) return;
 
         // io dragging
-        for (let i = 0; i < object.inputs.length; i++) {
-            const ioPos = getIOPos(object.pos, object.size, i, "input");
+        for (let i = 0; i < self.inputs.length; i++) {
+            const ioPos = getIOPos(self.pos, self.size, i, "input");
 
             if (Vec2.dist(ioPos, Mouse.worldPos) < 10) {
                 Camera.lock();
                 Mouse.dragging = {
-                    object,
+                    object: self,
                     io: {
                         type: "input",
                         index: i,
-                        val: object.inputs[i]
+                        val: self.inputs[i]
                     }
                 };
                 return;
             }
         }
 
-        for (let i = 0; i < object.outputs.length; i++) {
-            const ioPos = getIOPos(object.pos, object.size, i, "output");
+        for (let i = 0; i < self.outputs.length; i++) {
+            const ioPos = getIOPos(self.pos, self.size, i, "output");
 
             if (Vec2.dist(ioPos, Mouse.worldPos) < 10) {
                 Camera.lock();
                 Mouse.dragging = {
-                    object,
+                    object: self,
                     io: {
                         type: "output",
                         index: i,
-                        val: object.outputs[i]
+                        val: self.outputs[i]
                     }
                 };
                 return;
@@ -200,32 +289,32 @@ export function createNode(self: NodeOptions) {
         }
 
         // node dragging
-        if (inside(object.pos, object.size, Mouse.worldPos)) {
+        if (inside(self.pos, self.size, Mouse.worldPos)) {
             Camera.lock();
             Mouse.dragging = {
-                object,
+                object: self,
                 offset: {
-                    x: Mouse.worldPos.x - object.pos.x,
-                    y: Mouse.worldPos.y - object.pos.y
+                    x: Mouse.worldPos.x - self.pos.x,
+                    y: Mouse.worldPos.y - self.pos.y
                 }
             };
         }
     });
 
     Mouse.listener.on("move", () => {
-        if (!Mouse.dragging || Mouse.dragging.object !== object || !Mouse.dragging.offset) return;
+        if (!Mouse.dragging || Mouse.dragging.object !== self || !Mouse.dragging.offset) return;
 
-        object.pos = Vec2.sub(Mouse.worldPos, Mouse.dragging.offset);
+        self.pos = Vec2.sub(Mouse.worldPos, Mouse.dragging.offset);
     });
 
     Mouse.listener.on("up", () => {
-        if (!Mouse.dragging || Mouse.dragging.object !== object) return;
+        if (!Mouse.dragging || Mouse.dragging.object !== self) return;
 
         if (Mouse.dragging.io) {
             for (const obj of objects) {
-                if (!(obj as Node).inputs) continue;
+                if (!(obj as CanvasNode).inputs) continue;
 
-                const node = obj as Node;
+                const node = obj as CanvasNode;
 
                 if (Mouse.dragging.io.type !== "input") {
                     for (let i = 0; i < node.inputs.length; i++) {
@@ -238,9 +327,25 @@ export function createNode(self: NodeOptions) {
 
                             // make sure they have the same value
                             if (Mouse.dragging.io.val.material !== node.inputs[i].material) continue;
-                            Mouse.dragging.object.connections.push({
+
+                            const fromNode = Mouse.dragging.object as CanvasNode;
+
+                            fromNode.connections.push({
                                 from: {
-                                    node: Mouse.dragging.object,
+                                    node: fromNode,
+                                    type: Mouse.dragging.io.type,
+                                    index: Mouse.dragging.io.index
+                                },
+                                to: {
+                                    node,
+                                    type: "input",
+                                    index: i
+                                }
+                            });
+
+                            node.backConnections.push({
+                                from: {
+                                    node: fromNode,
                                     type: Mouse.dragging.io.type,
                                     index: Mouse.dragging.io.index
                                 },
@@ -265,6 +370,9 @@ export function createNode(self: NodeOptions) {
 
                         // make sure they have the same value
                         if (Mouse.dragging.io.val.material !== node.outputs[i].material) continue;
+
+                        const fromNode = Mouse.dragging.object as CanvasNode;
+
                         node.connections.push({
                             from: {
                                 node,
@@ -272,7 +380,20 @@ export function createNode(self: NodeOptions) {
                                 index: i
                             },
                             to: {
-                                node: Mouse.dragging.object,
+                                node: fromNode,
+                                type: Mouse.dragging.io.type,
+                                index: Mouse.dragging.io.index
+                            }
+                        });
+
+                        fromNode.backConnections.push({
+                            from: {
+                                node,
+                                type: "output",
+                                index: i
+                            },
+                            to: {
+                                node: fromNode,
                                 type: Mouse.dragging.io.type,
                                 index: Mouse.dragging.io.index
                             }
@@ -285,53 +406,6 @@ export function createNode(self: NodeOptions) {
         Mouse.dragging = undefined;
         Camera.unlock();
     });
-}
-
-export function nodeInit(self: NodeOptions) {
-    if (!self.inputs) self.inputs = [];
-    if (!self.outputs) self.outputs = [];
-
-    container.appendChild(nodeToHTML(self));
-
-    const addButton = queryElement(container, `#${self.name.replaceAll(" ", "_")} button`);
-
-    const size = {
-        x: getWidth(self),
-        y: getHeight(self)
-    };
-
-    const preview = () => {
-        ctx.fillStyle = colors.backgroundSecondary;
-        ctx.strokeStyle = colors.backgroundSecondary;
-
-        ctx.fillRect(Mouse.worldPos.x, Mouse.worldPos.y, size.x, size.y);
-    };
-
-    addButton.addEventListener("click", () => {
-        Mouse.listener.on("move", preview);
-
-        Mouse.listener.once("down", () => {
-            createNode(self);
-            Mouse.listener.off("move", preview);
-        });
-    });
-}
-
-export function nodeTick(self: Node) {
-    for (let i = 0; i < self.connections.length; i++) {
-        const connection = self.connections[i];
-        const speed = 1;
-
-        const fromConn = connection.from.node.outputs[connection.from.index];
-        const toConn = connection.to.node.inputs[connection.to.index];
-
-        if (fromConn.stored < speed) continue;
-        fromConn.stored -= speed;
-        toConn.stored += speed;
-
-        fromConn.stored = roundTo(fromConn.stored, 2);
-        toConn.stored = roundTo(toConn.stored, 2);
-    }
 }
 
 export function nodeToHTML(node: NodeOptions) {
@@ -360,7 +434,15 @@ export function nodeToHTML(node: NodeOptions) {
                 ${val[1] ? `<td class="output">${val[1].material}</td>` : "<td></td>"}
             </tr>`).join("")}
         </tbody></table>` : ""}
-        <button class="node-add">Add</button>
+        ${node.recipe ? `<h3>Recipe</h3>
+        <table class="recipe"><tbody>
+            ${node.recipe.map(ingredient => `
+            <tr class="${ingredient.material.replaceAll(" ", "_")}">
+                <td class="material">${ingredient.material}</td>
+                <td class="amount">${storage[ingredient.material].amount}/${ingredient.amount}</td>
+            </tr>`).join("")}
+        </tbody></table>
+        <button class="node-craft">Craft</button>` : "<button class=\"node-add\">Add</button>"}
     `;
     return div;
 }

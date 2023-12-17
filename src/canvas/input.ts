@@ -1,4 +1,5 @@
-import { Vec2 } from "@type/canvas";
+import { CanvasObject, Vec2 } from "@type/canvas";
+import { Connection, MaterialIO } from "@type/factory";
 import { EventEmitter } from "@util/eventEmitter";
 
 export const Mouse = {
@@ -17,5 +18,14 @@ export const Mouse = {
     leftDown: false,
     rightDown: false,
     listener: new EventEmitter(),
-    dragging: undefined as any
+    dragging: undefined as {
+        object: CanvasObject,
+        offset?: Vec2,
+        io?: {
+            type: "input" | "output",
+            index: number,
+            val: MaterialIO
+        }
+    } | undefined,
+    hovering: undefined as CanvasObject | Connection | undefined,
 };
