@@ -39,5 +39,5 @@ export function transFlag() {
         "#56cefe",
     ];
 
-    console.log(colors.map(color => "%c                      ").join("\n"), ...colors.map(color => `background-color: ${color}; width: 100%`));
+    console.log(colors.map(() => "%c                      ").join("\n"), ...colors.map(color => `background-color: ${color}; width: 100%`));
 }

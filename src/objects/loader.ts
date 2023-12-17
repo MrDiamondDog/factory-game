@@ -165,6 +165,12 @@ export function load(data: ExportedData) {
             const fromData = { node: fromNode, type: from.type, index: from.index };
             const toData = { node: toNode, type: to.type, index: to.index };
 
+            // check for any
+            if (toData.type === "input" && toNode.inputs[toData.index].any) {
+                const { material } = fromNode.outputs[fromData.index];
+                toNode.inputs[toData.index].material = material;
+            }
+
             nodeInstance.connections.push({ from: fromData, to: toData });
         }
     }
