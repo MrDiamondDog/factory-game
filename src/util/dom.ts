@@ -37,3 +37,15 @@ export function tabs(options: TabSettings) {
         });
     }
 }
+
+export function downloadFile(filename: string, data: string) {
+    const blob = new Blob([data], { type: "text/plain;charset=utf-8" });
+    saveAs(blob, filename);
+}
+
+export function saveAs(blob: Blob, filename: string) {
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+}

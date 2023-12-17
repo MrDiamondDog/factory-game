@@ -1,6 +1,8 @@
-import { defineObject } from "@canvas/object";
-import { addToStorage } from "@storage/global";
-import { CanvasNode, FactoryDefinition, Material, NodeOptions } from "@type/factory";
+import { createObject, defineObject, objects } from "@canvas/object";
+import { setDebug } from "@canvas/renderer";
+import { addToStorage, clearStorage, setStorage, storage } from "@storage/global";
+import { CanvasNode, ExportedData, ExportedFactory, FactoryDefinition, Material, NodeOptions } from "@type/factory";
+import { downloadFile, query } from "@util/dom";
 import { Log } from "@util/logger";
 import { roundTo } from "@util/math";
 
@@ -102,3 +104,96 @@ export async function loadMachines() {
         });
     }
 }
+
+export function save() {
+    const exports = objects.map(obj => {
+        const node = obj as CanvasNode;
+        const { name, pos, connections, id } = node;
+
+        const exportedConnections = connections.map(connection => {
+            const { from, to } = connection;
+            const { node: fromNode, type: fromType, index: fromIndex } = from;
+            const { node: toNode, type: toType, index: toIndex } = to;
+
+            const fromId = fromNode.id;
+            const toId = toNode.id;
+
+            return {
+                from: { id: fromId, type: fromType, index: fromIndex },
+                to: { id: toId, type: toType, index: toIndex }
+            };
+        });
+
+        const definition = { name, pos, connections: exportedConnections, id } as ExportedFactory;
+
+        return definition;
+    });
+
+    const out = {
+        objects: exports,
+        storage
+    };
+
+    const json = JSON.stringify(out);
+    downloadFile("factory.json", json);
+}
+
+export function load(data: ExportedData) {
+    objects.length = 0;
+    clearStorage();
+
+    const { objects: nodes, storage, DEBUG: isDebug } = data;
+
+    for (const node of nodes) {
+        const { name, pos, id } = node;
+
+        const nodeInstance = createObject<CanvasNode>(name, pos);
+        nodeInstance.id = id;
+    }
+
+    for (const node of nodes) {
+        const { connections } = node;
+
+        const nodeInstance = objects.find(obj => obj.id === node.id) as CanvasNode;
+
+        for (const connection of connections) {
+            const { from, to } = connection;
+
+            const fromNode = objects.find(obj => obj.id === from.id) as CanvasNode;
+            const toNode = objects.find(obj => obj.id === to.id) as CanvasNode;
+
+            const fromData = { node: fromNode, type: from.type, index: from.index };
+            const toData = { node: toNode, type: to.type, index: to.index };
+
+            nodeInstance.connections.push({ from: fromData, to: toData });
+        }
+    }
+
+    setStorage(storage);
+
+    if (isDebug) setDebug(isDebug);
+}
+
+query("#save").addEventListener("click", save);
+query("#load").addEventListener("click", () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.click();
+
+    input.addEventListener("change", () => {
+        const file = input.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.readAsText(file);
+
+        reader.onload = () => {
+            const data = JSON.parse(reader.result as string) as ExportedData;
+            load(data);
+        };
+
+        reader.onerror = () => {
+            console.error(reader.error);
+        };
+    });
+});

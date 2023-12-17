@@ -1,3 +1,5 @@
+import { Storage } from "@storage/global";
+
 import { CanvasObject, ObjectOptions, Vec2 } from "./canvas";
 
 export enum Material {
@@ -65,4 +67,30 @@ export type CanvasNode = NodeOptions & CanvasObject & {
     specs: string[];
     connections: Connection[];
     backConnections: Connection[];
+};
+
+export type ExportedConnection = {
+    from: {
+        id: string;
+        type: "input" | "output";
+        index: number;
+    },
+    to: {
+        id: string;
+        type: "input" | "output";
+        index: number;
+    }
+}
+
+export type ExportedFactory = {
+    name: string;
+    id: string;
+    connections: ExportedConnection[];
+    pos: Vec2;
+}
+
+export type ExportedData = {
+    objects: ExportedFactory[];
+    storage: Storage;
+    DEBUG?: boolean;
 };

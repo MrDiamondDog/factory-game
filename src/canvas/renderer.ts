@@ -10,8 +10,12 @@ import { openCtxMenu } from "./contextmenu";
 import { Mouse } from "./input";
 import { createObject, objects } from "./object";
 
-export const DEBUG = false;
+export let DEBUG = false;
 export const FPS = 60;
+
+export function setDebug(debug: boolean) {
+    DEBUG = debug;
+}
 
 function drawBackground() {
     ctx.fillStyle = colors.backgroundSecondary;

@@ -181,9 +181,9 @@ export function nodeInit(self: NodeOptions) {
             let canCraft = true;
             for (const ingredient of self.recipe!) {
                 const row = queryElement(container, `#${self.name.replaceAll(" ", "_")} .${ingredient.material.replaceAll(" ", "_")}`);
-                row.querySelector(".amount")!.innerHTML = `${storage[ingredient.material].amount}/${ingredient.amount}`;
+                row.querySelector(".amount")!.innerHTML = `${storage[ingredient.material]}/${ingredient.amount}`;
 
-                if (storage[ingredient.material].amount < ingredient.amount) canCraft = false;
+                if (storage[ingredient.material] < ingredient.amount) canCraft = false;
             }
             if (canCraft) craftButton.disabled = false;
             else craftButton.disabled = true;
@@ -439,7 +439,7 @@ export function nodeToHTML(node: NodeOptions) {
             ${node.recipe.map(ingredient => `
             <tr class="${ingredient.material.replaceAll(" ", "_")}">
                 <td class="material">${ingredient.material}</td>
-                <td class="amount">${storage[ingredient.material].amount}/${ingredient.amount}</td>
+                <td class="amount">${storage[ingredient.material]}/${ingredient.amount}</td>
             </tr>`).join("")}
         </tbody></table>
         <button class="node-craft">Craft</button>` : "<button class=\"node-add\">Add</button>"}
