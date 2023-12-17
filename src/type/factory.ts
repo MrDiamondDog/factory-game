@@ -30,6 +30,7 @@ export type FactoryDefinition = {
 
 export type MaterialIO = {
     material?: Material;
+    any?: boolean;
     stored: number;
 };
 

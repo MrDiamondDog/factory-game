@@ -1,6 +1,6 @@
 import { defineObject } from "@canvas/object";
 import { addToStorage } from "@storage/global";
-import { CanvasNode, FactoryDefinition, NodeOptions } from "@type/factory";
+import { CanvasNode, FactoryDefinition, Material, NodeOptions } from "@type/factory";
 import { Log } from "@util/logger";
 import { roundTo } from "@util/math";
 
@@ -26,7 +26,7 @@ export async function loadMachines() {
             name: machine.name,
             description: machine.description,
             type: machine.type,
-            inputs: machine.inputs?.map(input => ({ stored: 0, material: input })),
+            inputs: machine.inputs?.map(input => ({ stored: 0, material: input, any: input === Material.Any })),
             outputs: machine.outputs?.map(output => ({ stored: 0, material: output })),
             specs: machine.specs,
             recipe: machine.recipe,
