@@ -1,4 +1,4 @@
-import { Storage } from "@/economy/storage";
+import { Storage } from "@economy/storage";
 
 import { CanvasObject, ObjectOptions, Vec2 } from "./canvas";
 
@@ -12,18 +12,20 @@ export enum MaterialType {
     Sand = "Sand",
     SiliconIngot = "Silicon Ingot",
     SiliconSheet = "Silicon Sheet",
+    BasicCircuit = "Basic Circuit",
 }
 
 export const Materials: Record<keyof typeof MaterialType, number> = {
     Any: 0,
     Watts: 0,
-    IronOre: 0,
+    IronOre: 10,
     CopperOre: 10,
     CopperIngot: 25,
-    Coal: 5,
-    Sand: 2,
+    Coal: 10,
+    Sand: 5,
     SiliconSheet: 25,
     SiliconIngot: 50,
+    BasicCircuit: 125,
 };
 
 export type FactoryDefinition = {
@@ -108,6 +110,7 @@ export type ExportedFactory = {
 export type ExportedData = {
     objects: ExportedFactory[];
     storage: Storage;
+    money: number;
     DEBUG?: boolean;
     TRANS?: boolean;
 };

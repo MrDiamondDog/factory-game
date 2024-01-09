@@ -8,6 +8,7 @@ import { CanvasNode, MaterialType, NodeOptions } from "@type/factory";
 import { weave } from "@util/array";
 import { drawCircle, inLine, inside, line, measureText } from "@util/canvas";
 import { query, queryAll, queryElement } from "@util/dom";
+import { Log } from "@util/logger";
 import { roundTo } from "@util/math";
 
 import { colors, ctx, transferSpeed } from "@/constants";
@@ -179,6 +180,7 @@ export function nodeInit(self: NodeOptions) {
 
         function setDisabled() {
             buyButton.disabled = money < self.cost;
+            Log("set disabled", `money: ${money} cost: ${self.cost}`);
         }
 
         setDisabled();
@@ -196,7 +198,6 @@ export function nodeInit(self: NodeOptions) {
 
                 queryAll<HTMLButtonElement>(".node-add").forEach(node => node.disabled = false);
                 setMoney(money);
-                onMoneyChange.off("change", setDisabled);
             });
         });
 

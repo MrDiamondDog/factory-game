@@ -3,6 +3,7 @@
     "description": "Smelts sand into silicon ingots.",
     "type": "smelting",
     "inputs": [
+        "Watts",
         "Sand"
     ],
     "outputs": [

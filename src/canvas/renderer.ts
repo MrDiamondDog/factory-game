@@ -1,10 +1,10 @@
 import { Camera } from "@canvas/camera";
-import { loadMachines } from "@objects/loader";
+import { loadButton, loadMachines } from "@objects/loader";
 import { drawCircle, line } from "@util/canvas";
 import { Log } from "@util/logger";
 import { clone } from "@util/object";
 
-import { colors, ctx, elements } from "@/constants";
+import { canvas, colors, ctx } from "@/constants";
 
 import { openCtxMenu } from "./contextmenu";
 import { Mouse } from "./input";
@@ -68,8 +68,8 @@ function drawBackground() {
 }
 
 function resize() {
-    elements.canvas.width = elements.canvas.clientWidth;
-    elements.canvas.height = elements.canvas.clientHeight;
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
     ctx.textBaseline = "top";
     ctx.textAlign = "left";
 }
@@ -81,7 +81,7 @@ let start = Date.now();
 let ticks = 0;
 export let tps = 0;
 function draw() {
-    ctx.clearRect(0, 0, elements.canvas.width, elements.canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     Camera.begin();
 
@@ -125,8 +125,8 @@ Camera.update();
 draw();
 
 // Input listeners
-elements.canvas.addEventListener("mousemove", (event: MouseEvent) => {
-    const rect = elements.canvas.getBoundingClientRect();
+canvas.addEventListener("mousemove", (event: MouseEvent) => {
+    const rect = canvas.getBoundingClientRect();
 
     const oldPos = clone(Mouse.pos);
 
@@ -141,7 +141,7 @@ elements.canvas.addEventListener("mousemove", (event: MouseEvent) => {
     Mouse.listener.emit("move", event);
 });
 
-elements.canvas.addEventListener("mousedown", (event: MouseEvent) => {
+canvas.addEventListener("mousedown", (event: MouseEvent) => {
     if (event.button === 0) {
         Mouse.leftDown = true;
     } else if (event.button === 2) {
@@ -151,7 +151,7 @@ elements.canvas.addEventListener("mousedown", (event: MouseEvent) => {
     Mouse.listener.emit("down", event);
 });
 
-elements.canvas.addEventListener("mouseup", (event: MouseEvent) => {
+canvas.addEventListener("mouseup", (event: MouseEvent) => {
     if (event.button === 0) {
         Mouse.leftDown = false;
     } else if (event.button === 2) {
@@ -161,15 +161,15 @@ elements.canvas.addEventListener("mouseup", (event: MouseEvent) => {
     Mouse.listener.emit("up", event);
 });
 
-elements.canvas.addEventListener("click", (event: MouseEvent) => {
+canvas.addEventListener("click", (event: MouseEvent) => {
     Mouse.listener.emit("click", event);
 });
 
-elements.canvas.addEventListener("wheel", (event: WheelEvent) => {
+canvas.addEventListener("wheel", (event: WheelEvent) => {
     Mouse.listener.emit("wheel", event);
 });
 
-elements.canvas.addEventListener("contextmenu", (event: MouseEvent) => {
+canvas.addEventListener("contextmenu", (event: MouseEvent) => {
     event.preventDefault();
     openCtxMenu({
         x: event.clientX,
@@ -179,4 +179,6 @@ elements.canvas.addEventListener("contextmenu", (event: MouseEvent) => {
 
 (async () => {
     await loadMachines();
+
+    loadButton.click();
 })();

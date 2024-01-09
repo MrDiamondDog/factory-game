@@ -2,9 +2,11 @@ import { createObject, defineObject, objects } from "@canvas/object";
 import { FPS, setDebug } from "@canvas/renderer";
 import { addToStorage, clearStorage, setStorage, storage } from "@economy/storage";
 import { CanvasNode, ExportedData, ExportedFactory, FactoryDefinition, MaterialType, NodeOptions } from "@type/factory";
-import { downloadFile, query } from "@util/dom";
+import { query } from "@util/dom";
 import { Log, transFlag } from "@util/logger";
 import { roundTo } from "@util/math";
+
+import { money, setMoney } from "@/economy/money";
 
 import { nodeCreatedInit, nodeDraw, nodeInit, nodeTick } from "./node";
 
@@ -71,7 +73,8 @@ export async function loadMachines() {
                             continue;
                         }
                     }
-                    node.vars.cooldowns[mat.material] = produce.time.seconds ? produce.time.seconds * FPS : produce.time.ticks ?? 0;
+                    node.vars.cooldowns[mat.material] =
+                        produce.time ? produce.time.seconds ? produce.time.seconds * FPS : produce.time.ticks : 0;
 
                     // check if output is full
                     for (const material of produce.materials) {
@@ -140,11 +143,15 @@ export function save() {
 
     const out = {
         objects: exports,
-        storage
+        storage,
+        money
     };
 
     const json = JSON.stringify(out);
-    downloadFile("factory.json", json);
+    const b64 = btoa(json);
+
+    // saves forever, SameSite=None, Secure
+    document.cookie = `save=${b64}; expires=Fri, 31 Dec 9999 23:59:59 GMT; SameSite=None; Secure`;
 }
 
 export function load(data: ExportedData) {
@@ -203,6 +210,7 @@ export function load(data: ExportedData) {
 
     // load storage
     setStorage(storage);
+    setMoney(data.money);
 
     // load secrets
     if (isDebug) setDebug(isDebug);
@@ -212,25 +220,13 @@ export function load(data: ExportedData) {
 }
 
 query("#save").addEventListener("click", save);
-query("#load").addEventListener("click", () => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.click();
+export const loadButton = query("#load");
+loadButton.addEventListener("click", () => {
+    const b64 = document.cookie.split("; ").find(cookie => cookie.startsWith("save="))?.split("=")[1];
+    if (!b64) return;
 
-    input.addEventListener("change", () => {
-        const file = input.files?.[0];
-        if (!file) return;
+    const json = atob(b64);
+    const data = JSON.parse(json) as ExportedData;
 
-        const reader = new FileReader();
-        reader.readAsText(file);
-
-        reader.onload = () => {
-            const data = JSON.parse(reader.result as string) as ExportedData;
-            load(data);
-        };
-
-        reader.onerror = () => {
-            console.error(reader.error);
-        };
-    });
+    load(data);
 });

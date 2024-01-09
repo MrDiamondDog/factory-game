@@ -3,6 +3,7 @@
     "description": "A basic machine to assemble circuits from some basic parts.",
     "type": "assembly",
     "inputs": [
+        "Watts",
         "Copper Ingot",
         "Silicon Sheet"
     ],
@@ -34,6 +35,10 @@
                 {
                     "material": "Silicon Sheet",
                     "amount": 1
+                },
+                {
+                    "material": "Watts",
+                    "amount": 15
                 }
             ]
         }

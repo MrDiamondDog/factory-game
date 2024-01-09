@@ -3,6 +3,7 @@
     "description": "Presses",
     "type": "assembly",
     "inputs": [
+        "Watts",
         "Silicon Ingot"
     ],
     "outputs": [

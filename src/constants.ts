@@ -1,10 +1,8 @@
 import { query } from "@util/dom";
 
-export const elements = {
-    canvas: query<HTMLCanvasElement>("#factory canvas")
-};
+export const canvas = query<HTMLCanvasElement>("#factory canvas");
 
-export const ctx = elements.canvas.getContext("2d")!;
+export const ctx = canvas.getContext("2d")!;
 
 export function getColor(name: string) {
     return getComputedStyle(document.documentElement).getPropertyValue(`--${name}`);
