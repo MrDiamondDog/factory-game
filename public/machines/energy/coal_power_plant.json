@@ -1,0 +1,36 @@
+{
+    "name": "Coal Power Plant",
+    "description": "A basic coal power plant to power some machines.",
+    "type": "energy",
+    "inputs": [
+        "Coal"
+    ],
+    "outputs": [
+        "Watts"
+    ],
+    "specs": [
+        "*1 Coal* + *5s* -> *5 Watts*",
+        "Stores *50w*"
+    ],
+    "cost": 50,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Watts",
+                    "amount": 5,
+                    "limit": 50
+                }
+            ],
+            "time": {
+                "seconds": 5
+            },
+            "requires": [
+                {
+                    "material": "Coal",
+                    "amount": 1
+                }
+            ]
+        }
+    ]
+}

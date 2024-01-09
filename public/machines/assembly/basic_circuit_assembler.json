@@ -1,0 +1,41 @@
+{
+    "name": "Basic Circuit Assembler",
+    "description": "A basic machine to assemble circuits from some basic parts.",
+    "type": "assembly",
+    "inputs": [
+        "Copper Ingot",
+        "Silicon Sheet"
+    ],
+    "outputs": [
+        "Basic Circuit"
+    ],
+    "specs": [
+        "*2 Copper Ingot* + *1 Silicon Sheet* + *15w* + *5s* -> *1 Basic Circuit*",
+        "Stores *5 Basic Circuits*"
+    ],
+    "cost": 500,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Basic Circuit",
+                    "amount": 1,
+                    "limit": 5
+                }
+            ],
+            "time": {
+                "seconds": 5
+            },
+            "requires": [
+                {
+                    "material": "Copper Ingot",
+                    "amount": 2
+                },
+                {
+                    "material": "Silicon Sheet",
+                    "amount": 1
+                }
+            ]
+        }
+    ]
+}

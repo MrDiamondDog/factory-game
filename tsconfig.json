@@ -14,7 +14,7 @@
             "@canvas/*": ["./src/canvas/*"],
             "@objects/*": ["./src/objects/*"],
             "@/*": ["./src/*"],
-            "@storage/*": ["./src/storage/*"]
+            "@economy/*": ["./src/economy/*"]
         },
         "allowSyntheticDefaultImports": true
     },

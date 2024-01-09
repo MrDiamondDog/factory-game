@@ -1,0 +1,36 @@
+{
+    "name": "Copper Mining Rig",
+    "description": "A basic rig that mines some copper.",
+    "type": "gathering",
+    "inputs": [
+        "Watts"
+    ],
+    "outputs": [
+        "Copper Ore"
+    ],
+    "specs": [
+        "*5w* + *5s* -> *2 Copper Ore*",
+        "Stores *50 Copper Ore*"
+    ],
+    "cost": 100,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Copper Ore",
+                    "amount": 2,
+                    "limit": 50
+                }
+            ],
+            "time": {
+                "seconds": 5
+            },
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 5
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+{
+    "name": "Coal Quarry",
+    "description": "A quarry full of coal.",
+    "type": "gathering",
+    "outputs": [
+        "Coal"
+    ],
+    "specs": [
+        "*10s* -> *5 Coal*",
+        "Stores *50 Coal*"
+    ],
+    "cost": 50,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Coal",
+                    "amount": 5,
+                    "limit": 50
+                }
+            ],
+            "time": {
+                "seconds": 10
+            }
+        }
+    ]
+}

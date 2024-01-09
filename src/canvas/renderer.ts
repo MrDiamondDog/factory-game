@@ -8,7 +8,7 @@ import { colors, ctx, elements } from "@/constants";
 
 import { openCtxMenu } from "./contextmenu";
 import { Mouse } from "./input";
-import { createObject, objects } from "./object";
+import { objects } from "./object";
 
 export let DEBUG = false;
 export const FPS = 60;
@@ -179,10 +179,4 @@ elements.canvas.addEventListener("contextmenu", (event: MouseEvent) => {
 
 (async () => {
     await loadMachines();
-
-    // initial objects
-    createObject("Solar Panel", { x: -450, y: -50 });
-    createObject("Solar Panel", { x: -100, y: -200 });
-    createObject("Iron Drill", { x: -100, y: -50 });
-    createObject("Global Storage", { x: 200, y: -50 });
 })();

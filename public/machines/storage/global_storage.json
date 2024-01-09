@@ -1,6 +1,0 @@
-{
-    "name": "Global Storage",
-    "description": "Send any item to global storage.",
-    "inputs": ["Watts", "Any"],
-    "specs": ["*1w* -> Stores *1 item*"]
-}

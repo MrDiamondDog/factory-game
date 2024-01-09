@@ -1,43 +1,57 @@
-import { Storage } from "@storage/global";
+import { Storage } from "@/economy/storage";
 
 import { CanvasObject, ObjectOptions, Vec2 } from "./canvas";
 
-export enum Material {
-    Watts = "Watts",
-    Iron = "Iron",
-    IronGear = "Iron Gears",
+export enum MaterialType {
     Any = "Any",
-    Copper = "Copper",
-    CopperWire = "Copper Wire",
-    Circuit = "Circuit",
-    Water = "Water"
+    Watts = "Watts",
+    IronOre = "Iron Ore",
+    CopperOre = "Copper Ore",
+    CopperIngot = "Copper Ingot",
+    Coal = "Coal",
+    Sand = "Sand",
+    SiliconIngot = "Silicon Ingot",
+    SiliconSheet = "Silicon Sheet",
 }
+
+export const Materials: Record<keyof typeof MaterialType, number> = {
+    Any: 0,
+    Watts: 0,
+    IronOre: 0,
+    CopperOre: 10,
+    CopperIngot: 25,
+    Coal: 5,
+    Sand: 2,
+    SiliconSheet: 25,
+    SiliconIngot: 50,
+};
 
 export type FactoryDefinition = {
     name: string,
     description: string,
     type: string,
-    inputs?: Material[],
-    outputs?: Material[],
+    inputs?: MaterialType[],
+    outputs?: MaterialType[],
     specs: string[],
-    recipe?: RecipeMaterial[],
+    cost?: number,
     produces?: {
-        material: Material,
-        amount: number,
-        ticks?: number,
+        materials: (RecipeMaterial & { limit: number })[],
+        time?: {
+            seconds?: number,
+            ticks?: number
+        },
         requires?: RecipeMaterial[],
-        limit?: number
     }[]
 };
 
 export type MaterialIO = {
-    material?: Material;
+    material?: MaterialType;
     any?: boolean;
     stored: number;
 };
 
 export type RecipeMaterial = {
-    material: Material;
+    material: MaterialType;
     amount: number;
 };
 
@@ -48,7 +62,7 @@ export type NodeOptions = {
     hidden?: boolean;
     specs?: string[];
     type: string;
-    recipe?: RecipeMaterial[];
+    cost?: number;
 } & ObjectOptions;
 
 export type ConnectionData = {

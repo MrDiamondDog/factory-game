@@ -2,15 +2,15 @@ import { Camera } from "@canvas/camera";
 import { ctxMenuOpen } from "@canvas/contextmenu";
 import { Mouse } from "@canvas/input";
 import { createObject, objects } from "@canvas/object";
+import { money, onMoneyChange, setMoney } from "@economy/money";
 import { Vec2 } from "@type/canvas";
-import { CanvasNode, Material, NodeOptions } from "@type/factory";
+import { CanvasNode, MaterialType, NodeOptions } from "@type/factory";
 import { weave } from "@util/array";
 import { drawCircle, inLine, inside, line, measureText } from "@util/canvas";
 import { query, queryAll, queryElement } from "@util/dom";
 import { roundTo } from "@util/math";
 
-import { colors, ctx } from "@/constants";
-import { removeFromStorage, storage, storageListener } from "@/storage/global";
+import { colors, ctx, transferSpeed } from "@/constants";
 
 const container = query<HTMLDivElement>("#factories");
 
@@ -174,37 +174,29 @@ export function nodeInit(self: NodeOptions) {
 
     container.appendChild(nodeToHTML(self));
 
-    if (self.recipe) {
-        const craftButton = queryElement<HTMLButtonElement>(container, `#${self.name.replaceAll(" ", "_")} .node-craft`);
+    if (self.cost) {
+        const buyButton = queryElement<HTMLButtonElement>(container, `#${self.name.replaceAll(" ", "_")} .node-buy`);
 
-        function updateRecipe() {
-            let canCraft = true;
-            for (const ingredient of self.recipe!) {
-                const row = queryElement(container, `#${self.name.replaceAll(" ", "_")} .${ingredient.material.replaceAll(" ", "_")}`);
-                row.querySelector(".amount")!.innerHTML = `${storage[ingredient.material]}/${ingredient.amount}`;
-
-                if (storage[ingredient.material] < ingredient.amount) canCraft = false;
-            }
-            if (canCraft) craftButton.disabled = false;
-            else craftButton.disabled = true;
+        function setDisabled() {
+            buyButton.disabled = money < self.cost;
         }
 
-        self.recipe?.forEach(updateRecipe);
-        storageListener.on("change", updateRecipe);
+        setDisabled();
+        onMoneyChange.on("change", setDisabled);
 
-        craftButton.addEventListener("click", () => {
-            for (const ingredient of self.recipe!) {
-                removeFromStorage(ingredient.material, ingredient.amount);
-            }
+        buyButton.addEventListener("click", () => {
+            if (money < self.cost) return;
+            setMoney(money - self.cost);
 
             queryAll<HTMLButtonElement>(".node-add").forEach(node => node.disabled = true);
-            queryAll<HTMLButtonElement>(".node-craft").forEach(node => node.disabled = true);
+            queryAll<HTMLButtonElement>(".node-buy").forEach(node => node.disabled = true);
 
             Mouse.listener.once("down", () => {
                 createObject<CanvasNode>(self.name, Mouse.worldPos);
 
                 queryAll<HTMLButtonElement>(".node-add").forEach(node => node.disabled = false);
-                updateRecipe();
+                setMoney(money);
+                onMoneyChange.off("change", setDisabled);
             });
         });
 
@@ -214,13 +206,13 @@ export function nodeInit(self: NodeOptions) {
     const addButton = queryElement(container, `#${self.name.replaceAll(" ", "_")} .node-add`);
     addButton.addEventListener("click", () => {
         queryAll<HTMLButtonElement>(".node-add").forEach(node => node.disabled = true);
-        queryAll<HTMLButtonElement>(".node-craft").forEach(node => node.disabled = true);
+        queryAll<HTMLButtonElement>(".node-buy").forEach(node => node.disabled = true);
 
         Mouse.listener.once("down", () => {
             createObject<CanvasNode>(self.name, Mouse.worldPos);
 
             queryAll<HTMLButtonElement>(".node-add").forEach(node => node.disabled = false);
-            queryAll<HTMLButtonElement>(".node-craft").forEach(node => node.disabled = false);
+            setMoney(money);
         });
     });
 }
@@ -228,14 +220,13 @@ export function nodeInit(self: NodeOptions) {
 export function nodeTick(self: CanvasNode) {
     for (let i = 0; i < self.connections.length; i++) {
         const connection = self.connections[i];
-        const speed = 1;
 
         const fromConn = connection.from.node.outputs[connection.from.index];
         const toConn = connection.to.node.inputs[connection.to.index];
 
-        if (fromConn.stored < speed) continue;
-        fromConn.stored -= speed;
-        toConn.stored += speed;
+        if (fromConn.stored < transferSpeed) continue;
+        fromConn.stored -= transferSpeed;
+        toConn.stored += transferSpeed;
 
         fromConn.stored = roundTo(fromConn.stored, 2);
         toConn.stored = roundTo(toConn.stored, 2);
@@ -322,7 +313,7 @@ export function nodeCreatedInit(self: CanvasNode) {
 
                         if (Vec2.dist(ioPos, Mouse.worldPos) < 10) {
                             // convert any to the material of the input
-                            if (node.inputs[i].material === Material.Any && Mouse.dragging.io.val.material !== Material.Watts)
+                            if (node.inputs[i].material === MaterialType.Any && Mouse.dragging.io.val.material !== MaterialType.Watts)
                                 node.inputs[i].material = Mouse.dragging.io.val.material;
 
                             // make sure they have the same value
@@ -365,7 +356,7 @@ export function nodeCreatedInit(self: CanvasNode) {
 
                     if (Vec2.dist(ioPos, Mouse.worldPos) < 10) {
                         // convert any to the material of the input
-                        if (Mouse.dragging.io.val.material === Material.Any && node.outputs[i].material !== Material.Watts)
+                        if (Mouse.dragging.io.val.material === MaterialType.Any && node.outputs[i].material !== MaterialType.Watts)
                             Mouse.dragging.io.val.material = node.outputs[i].material;
 
                         // make sure they have the same value
@@ -434,15 +425,7 @@ export function nodeToHTML(node: NodeOptions) {
                 ${val[1] ? `<td class="output">${val[1].material}</td>` : "<td></td>"}
             </tr>`).join("")}
         </tbody></table>` : ""}
-        ${node.recipe ? `<h3>Recipe</h3>
-        <table class="recipe"><tbody>
-            ${node.recipe.map(ingredient => `
-            <tr class="${ingredient.material.replaceAll(" ", "_")}">
-                <td class="material">${ingredient.material}</td>
-                <td class="amount">${storage[ingredient.material]}/${ingredient.amount}</td>
-            </tr>`).join("")}
-        </tbody></table>
-        <button class="node-craft">Craft</button>` : "<button class=\"node-add\">Add</button>"}
+        ${node.cost ? `<button class="node-buy">Buy ($${node.cost})</button>` : "<button class=\"node-add\">Add</button>"}
     `;
     return div;
 }

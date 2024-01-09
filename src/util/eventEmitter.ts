@@ -1,13 +1,13 @@
-export class EventEmitter {
+export class EventEmitter<T> {
     events: {
-        [key: string]: Function[];
+        [key: string]: ((val: T) => void)[];
     };
 
     constructor() {
         this.events = {};
     }
 
-    on(eventName: string, callback: Function) {
+    on(eventName: string, callback: (val: T) => void) {
         if (!this.events[eventName]) {
             this.events[eventName] = [];
         }
@@ -15,17 +15,17 @@ export class EventEmitter {
         this.events[eventName].push(callback);
     }
 
-    emit(eventName: string, ...args: any[]) {
+    emit(eventName: string, val: T) {
         if (!this.events[eventName]) {
             return;
         }
 
         this.events[eventName].forEach(callback => {
-            callback(...args);
+            callback(val);
         });
     }
 
-    off(eventName: string, callback: Function) {
+    off(eventName: string, callback: (val: T) => void) {
         if (!this.events[eventName]) {
             return;
         }
@@ -39,9 +39,9 @@ export class EventEmitter {
         this.events = {};
     }
 
-    once(eventName: string, callback: Function) {
-        const onceCallback = (...args: any[]) => {
-            callback(...args);
+    once(eventName: string, callback: (val: T) => void) {
+        const onceCallback = (val: T) => {
+            callback(val);
             this.off(eventName, onceCallback);
         };
 

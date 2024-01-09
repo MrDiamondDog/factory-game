@@ -1,5 +1,5 @@
 import { ContextMenuOption, Vec2 } from "@type/canvas";
-import { CanvasNode, Connection, Material } from "@type/factory";
+import { CanvasNode, Connection, MaterialType } from "@type/factory";
 
 import { Mouse } from "./input";
 import { deleteObject } from "./object";
@@ -14,7 +14,7 @@ export const ctxMenu: ContextMenuOption[] = [
             });
             hovering.connections.forEach(connection => {
                 if (connection.to.node.inputs[connection.to.index].any) {
-                    connection.to.node.inputs[connection.to.index].material = Material.Any;
+                    connection.to.node.inputs[connection.to.index].material = MaterialType.Any;
                     connection.to.node.inputs[connection.to.index].stored = 0;
                 }
             });
@@ -31,7 +31,7 @@ export const ctxMenu: ContextMenuOption[] = [
             const connection = Mouse.hovering as Connection;
 
             if (connection.to.node.inputs[connection.to.index].any) {
-                connection.to.node.inputs[connection.to.index].material = Material.Any;
+                connection.to.node.inputs[connection.to.index].material = MaterialType.Any;
                 connection.to.node.inputs[connection.to.index].stored = 0;
             }
 

@@ -23,3 +23,5 @@ export const colors = {
     buttonPrimary: getColor("button-primary"),
     buttonSecondary: getColor("button-secondary"),
 };
+
+export const transferSpeed = 1;

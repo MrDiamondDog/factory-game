@@ -1,43 +1,47 @@
 import { createObject, defineObject, objects } from "@canvas/object";
-import { setDebug } from "@canvas/renderer";
-import { addToStorage, clearStorage, setStorage, storage } from "@storage/global";
-import { CanvasNode, ExportedData, ExportedFactory, FactoryDefinition, Material, NodeOptions } from "@type/factory";
+import { FPS, setDebug } from "@canvas/renderer";
+import { addToStorage, clearStorage, setStorage, storage } from "@economy/storage";
+import { CanvasNode, ExportedData, ExportedFactory, FactoryDefinition, MaterialType, NodeOptions } from "@type/factory";
 import { downloadFile, query } from "@util/dom";
 import { Log, transFlag } from "@util/logger";
 import { roundTo } from "@util/math";
 
 import { nodeCreatedInit, nodeDraw, nodeInit, nodeTick } from "./node";
 
-export const machinePath = (file: string, type: string) => `machines/${type}/${file}`;
 export const listPath = "machines/list.json";
 
 export async function loadMachines() {
-    const list = await fetch(listPath).then(r => r.json()) as { file: string; type: string; }[];
+    const list = await fetch(listPath).then(r => r.json()) as string[];
 
     const machines: FactoryDefinition[] = [];
-    for (const { file, type } of list) {
-        const machine = await fetch(machinePath(file, type)).then(r => r.json()) as FactoryDefinition;
-        machine.type = type;
+    for (const file of list) {
+        const machine = await fetch(`machines/${file}`).then(r => r.json()) as FactoryDefinition;
         machines.push(machine);
     }
 
     for (const machine of machines) {
-        Log("loader", `Loaded machine ${machine.name}`);
+        Log("loader", `Loading machine ${machine.name}`);
+
+        machine.produces?.forEach(produce => {
+            if (!produce.time) return;
+            if (!produce.time.seconds && !produce.time.ticks) throw new Error(`One of seconds or ticks must be defined for ${machine.name}`);
+            if (produce.time.seconds && produce.time.ticks) throw new Error(`Only one of seconds or ticks must be defined for ${machine.name}`);
+        });
 
         defineObject<NodeOptions>({
             name: machine.name,
             description: machine.description,
             type: machine.type,
-            inputs: machine.inputs?.map(input => ({ stored: 0, material: input, any: input === Material.Any })),
+            inputs: machine.inputs?.map(input => ({ stored: 0, material: input, any: input === MaterialType.Any })),
             outputs: machine.outputs?.map(output => ({ stored: 0, material: output })),
             specs: machine.specs,
-            recipe: machine.recipe,
+            cost: machine.cost,
             draw: nodeDraw,
             init: nodeInit,
             createdInit: nodeCreatedInit,
             vars: {
                 cooldowns: Object.fromEntries(
-                    machine.produces?.filter(produce => produce.ticks).map(produce => [produce.material, 0])
+                    machine.produces?.filter(produce => produce.time).map(produce => [produce.materials, 0])
                     || []
                 )
             },
@@ -56,23 +60,24 @@ export async function loadMachines() {
                 }
 
                 if (!machine.produces) return;
+                outer:
                 for (const produce of machine.produces) {
+                    const mat = produce.materials[0];
                     // handle cooldown if applicable
-                    if (produce.ticks) {
-                        const cooldown = node.vars.cooldowns[produce.material];
+                    if (produce.time) {
+                        const cooldown = node.vars.cooldowns[mat.material];
                         if (cooldown > 0) {
-                            node.vars.cooldowns[produce.material]--;
+                            node.vars.cooldowns[mat.material]--;
                             continue;
                         }
                     }
-                    node.vars.cooldowns[produce.material] = produce.ticks ?? 0;
-
-                    const { amount } = produce;
+                    node.vars.cooldowns[mat.material] = produce.time.seconds ? produce.time.seconds * FPS : produce.time.ticks ?? 0;
 
                     // check if output is full
-                    const output = node.outputs.find(output => output.material === produce.material);
-                    const limit = produce.limit ?? Infinity;
-                    if (output.stored >= limit) continue;
+                    for (const material of produce.materials) {
+                        const output = node.outputs.find(output => output.material === material.material)!;
+                        if (output.stored >= material.limit) continue outer;
+                    }
 
                     // check inputs for required items
                     if (produce.requires) {
@@ -95,8 +100,12 @@ export async function loadMachines() {
                     }
 
                     // add items
-                    output.stored += amount;
-                    output.stored = roundTo(output.stored, 2);
+                    for (const material of produce.materials) {
+                        const output = node.outputs.find(output => output.material === material.material)!;
+                        output.stored += material.amount;
+
+                        output.stored = roundTo(output.stored, 2);
+                    }
                 }
 
                 nodeTick(node);

@@ -1,0 +1,40 @@
+{
+    "name": "Silicon Ingot Smelter",
+    "description": "Smelts sand into silicon ingots.",
+    "type": "smelting",
+    "inputs": [
+        "Sand"
+    ],
+    "outputs": [
+        "Silicon Ingot"
+    ],
+    "specs": [
+        "*5 Sand* + *5s* + *5w* -> *1 Silicon Ingot*",
+        "Stores *10 Silicon Ingots*"
+    ],
+    "cost": 250,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Silicon Ingot",
+                    "amount": 1,
+                    "limit": 10
+                }
+            ],
+            "time": {
+                "seconds": 5
+            },
+            "requires": [
+                {
+                    "material": "Sand",
+                    "amount": 5
+                },
+                {
+                    "material": "Watts",
+                    "amount": 5
+                }
+            ]
+        }
+    ]
+}

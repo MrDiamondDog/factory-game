@@ -1,0 +1,40 @@
+{
+    "name": "Silicon Press",
+    "description": "Presses",
+    "type": "assembly",
+    "inputs": [
+        "Silicon Ingot"
+    ],
+    "outputs": [
+        "Silicon Sheet"
+    ],
+    "specs": [
+        "*1 Silicon Ingot* + *5w* + *2s* -> *2 Silicon Sheet*",
+        "Stores *10 Silicon Sheet*"
+    ],
+    "cost": 300,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Silicon Sheet",
+                    "amount": 2,
+                    "limit": 10
+                }
+            ],
+            "time": {
+                "seconds": 2
+            },
+            "requires": [
+                {
+                    "material": "Silicon Ingot",
+                    "amount": 1
+                },
+                {
+                    "material": "Watts",
+                    "amount": 5
+                }
+            ]
+        }
+    ]
+}

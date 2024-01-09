@@ -1,0 +1,36 @@
+{
+    "name": "Excavator",
+    "description": "A machine designed for digging dirt and other top-level materials.",
+    "type": "gathering",
+    "inputs": [
+        "Watts"
+    ],
+    "outputs": [
+        "Sand"
+    ],
+    "specs": [
+        "*5w* + *10s* -> *10 Sand*",
+        "Stores *30 Sand*"
+    ],
+    "cost": 150,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Sand",
+                    "amount": 10,
+                    "limit": 30
+                }
+            ],
+            "time": {
+                "seconds": 10
+            },
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 5
+                }
+            ]
+        }
+    ]
+}
