@@ -230,3 +230,8 @@ loadButton.addEventListener("click", () => {
 
     load(data);
 });
+
+query("#reset").addEventListener("click", () => {
+    window.localStorage.removeItem("save");
+    document.location.reload();
+});
