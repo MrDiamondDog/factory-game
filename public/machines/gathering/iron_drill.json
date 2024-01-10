@@ -1,0 +1,36 @@
+{
+    "name": "Iron Drill",
+    "description": "Mines iron ore from the ground.",
+    "type": "gathering",
+    "inputs": [
+        "Watts"
+    ],
+    "outputs": [
+        "Iron Ore"
+    ],
+    "specs": [
+        "*10w* + *5s* -> *2 Iron Ore*",
+        "Stores *50 Iron Ore*"
+    ],
+    "cost": 300,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Iron Ore",
+                    "amount": 2,
+                    "limit": 50
+                }
+            ],
+            "time": {
+                "seconds": 5
+            },
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 10
+                }
+            ]
+        }
+    ]
+}

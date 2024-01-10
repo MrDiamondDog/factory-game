@@ -1,0 +1,36 @@
+{
+    "name": "Silicon Wafer Fabrication Plant",
+    "description": "Fabricates silicon wafers designed for advanced electronics.",
+    "type": "smelting",
+    "inputs": [
+        "Silicon Sheet"
+    ],
+    "outputs": [
+        "Silicon Wafer"
+    ],
+    "specs": [
+        "*2 Silicon Sheet* + *10s* -> *1 Silicon Wafer*",
+        "Stores *10 Silicon Wafer*"
+    ],
+    "cost": 2500,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Silicon Wafer",
+                    "amount": 1,
+                    "limit": 10
+                }
+            ],
+            "time": {
+                "seconds": 10
+            },
+            "requires": [
+                {
+                    "material": "Silicon Sheet",
+                    "amount": 2
+                }
+            ]
+        }
+    ]
+}

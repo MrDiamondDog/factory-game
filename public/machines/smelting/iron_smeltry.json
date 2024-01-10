@@ -1,24 +1,24 @@
 {
     "name": "Copper Smeltry",
-    "description": "A furnace made for turning copper ore into ingots.",
+    "description": "A furnace made for turning iron ore into ingots.",
     "type": "smelting",
     "inputs": [
         "Watts",
-        "Copper Ore"
+        "Iron Ore"
     ],
     "outputs": [
-        "Copper Ingot"
+        "Iron Ingot"
     ],
     "specs": [
-        "*5 Copper Ore* + *10w* + *2s* -> *1 Copper Ingot*",
-        "Store *10 Copper Ingots*"
+        "*5 Iron Ore* + *15w* + *2s* -> *1 Iron Ingot*",
+        "Store *10 Iron Ingots*"
     ],
     "cost": 250,
     "produces": [
         {
             "materials": [
                 {
-                    "material": "Copper Ingot",
+                    "material": "Iron Ingot",
                     "amount": 1,
                     "limit": 10
                 }
@@ -28,12 +28,12 @@
             },
             "requires": [
                 {
-                    "material": "Copper Ore",
+                    "material": "Iron Ore",
                     "amount": 5
                 },
                 {
                     "material": "Watts",
-                    "amount": 10
+                    "amount": 15
                 }
             ]
         }

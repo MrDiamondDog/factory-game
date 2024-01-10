@@ -1,0 +1,41 @@
+{
+    "name": "Zinc Ore Refinery",
+    "description": "A refinery designed for turning zinc ore into ingots.",
+    "type": "smelting",
+    "inputs": [
+        "Watts",
+        "Zinc Ore"
+    ],
+    "outputs": [
+        "Zinc Ingot"
+    ],
+    "specs": [
+        "*15w* + *5 Zinc Ore* + *5s* -> *1 Zinc Ingot*",
+        "Stores *10 Zinc Ingot*"
+    ],
+    "cost": 1000,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Zinc Ingot",
+                    "amount": 1,
+                    "limit": 10
+                }
+            ],
+            "time": {
+                "seconds": 5
+            },
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 15
+                },
+                {
+                    "material": "Zinc Ore",
+                    "amount": 5
+                }
+            ]
+        }
+    ]
+}

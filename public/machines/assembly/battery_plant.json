@@ -1,0 +1,41 @@
+{
+    "name": "Battery Plant",
+    "description": "A battery plant produces batteries from raw materials.",
+    "type": "assembly",
+    "inputs": [
+        "Watts",
+        "Zinc Ingot"
+    ],
+    "outputs": [
+        "Battery"
+    ],
+    "specs": [
+        "*1 Zinc Ingot* + *15w* + *5s* -> *1 Battery*",
+        "Stores *10 Batteries*"
+    ],
+    "cost": 800,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Battery",
+                    "amount": 1,
+                    "limit": 10
+                }
+            ],
+            "time": {
+                "seconds": 5
+            },
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 15
+                },
+                {
+                    "material": "Zinc Ingot",
+                    "amount": 1
+                }
+            ]
+        }
+    ]
+}

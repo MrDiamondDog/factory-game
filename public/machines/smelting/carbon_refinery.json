@@ -1,39 +1,39 @@
 {
-    "name": "Copper Smeltry",
-    "description": "A furnace made for turning copper ore into ingots.",
+    "name": "Carbon Refinery",
+    "description": "Refines raw carbon into a usable form.",
     "type": "smelting",
     "inputs": [
         "Watts",
-        "Copper Ore"
+        "Raw Carbon"
     ],
     "outputs": [
-        "Copper Ingot"
+        "Refined Carbon"
     ],
     "specs": [
-        "*5 Copper Ore* + *10w* + *2s* -> *1 Copper Ingot*",
-        "Store *10 Copper Ingots*"
+        "*20w* + *10 Raw Carbon* + *5s* -> *1 Refined Carbon*",
+        "Stores *10 Refined Carbon*"
     ],
-    "cost": 250,
+    "cost": 2000,
     "produces": [
         {
             "materials": [
                 {
-                    "material": "Copper Ingot",
+                    "material": "Refined Carbon",
                     "amount": 1,
                     "limit": 10
                 }
             ],
             "time": {
-                "seconds": 10
+                "seconds": 5
             },
             "requires": [
                 {
-                    "material": "Copper Ore",
-                    "amount": 5
+                    "material": "Raw Carbon",
+                    "amount": 10
                 },
                 {
                     "material": "Watts",
-                    "amount": 10
+                    "amount": 20
                 }
             ]
         }

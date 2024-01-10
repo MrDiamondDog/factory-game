@@ -1,0 +1,36 @@
+{
+    "name": "Steel Ingot Mold",
+    "description": "Molds molten steel into ingots.",
+    "type": "assembly",
+    "inputs": [
+        "Molten Steel"
+    ],
+    "outputs": [
+        "Steel Ingot"
+    ],
+    "specs": [
+        "*10 Molten Steel* + *5s* -> *1 Steel Ingot*",
+        "Stores *10 Steel Ingot*"
+    ],
+    "cost": 1000,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Steel Ingot",
+                    "amount": 1,
+                    "limit": 10
+                }
+            ],
+            "time": {
+                "seconds": 5
+            },
+            "requires": [
+                {
+                    "material": "Molten Steel",
+                    "amount": 10
+                }
+            ]
+        }
+    ]
+}

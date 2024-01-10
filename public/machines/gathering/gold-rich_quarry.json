@@ -1,0 +1,27 @@
+{
+    "name": "Gold-rich Quarry",
+    "description": "A dream for miners in the gold rush, this mine is almost completely full of gold.",
+    "type": "gathering",
+    "outputs": [
+        "Gold Ore"
+    ],
+    "specs": [
+        "*10s* -> *5 Gold Ore*",
+        "Stores *50 Gold Ore*"
+    ],
+    "cost": 4500,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Gold Ore",
+                    "amount": 5,
+                    "limit": 50
+                }
+            ],
+            "time": {
+                "seconds": 10
+            }
+        }
+    ]
+}

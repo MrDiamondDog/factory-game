@@ -1,0 +1,48 @@
+{
+    "name": "Electric Motor Factory",
+    "description": "Assembles electric motors from basic parts.",
+    "type": "assembly",
+    "inputs": [
+        "Watts",
+        "Copper Wire",
+        "Iron Ingot",
+        "Basic Circuit"
+    ],
+    "outputs": [
+        "Electric Motor"
+    ],
+    "specs": [
+        "*10w* + *10 Copper Wire* + *1 Iron Ingot* + *1 Basic Circuit* -> *1 Electric Motor*",
+        "Stores *5 Electric Motors*"
+    ],
+    "cost": 750,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Electric Motor",
+                    "amount": 1,
+                    "limit": 5
+                }
+            ],
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 10
+                },
+                {
+                    "material": "Copper Wire",
+                    "amount": 10
+                },
+                {
+                    "material": "Iron Ingot",
+                    "amount": 1
+                },
+                {
+                    "material": "Basic Circuit",
+                    "amount": 1
+                }
+            ]
+        }
+    ]
+}

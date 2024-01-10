@@ -150,8 +150,7 @@ export function save() {
     const json = JSON.stringify(out);
     const b64 = btoa(json);
 
-    // saves forever, SameSite=None, Secure
-    document.cookie = `save=${b64}; expires=Fri, 31 Dec 9999 23:59:59 GMT; SameSite=None; Secure`;
+    window.localStorage.setItem("save", b64);
 }
 
 export function load(data: ExportedData) {
@@ -177,6 +176,7 @@ export function load(data: ExportedData) {
         if (node.inputs) {
             for (const input of node.inputs) {
                 const { material, stored } = input;
+                console.log(input.material, nodeInstance.inputs);
                 nodeInstance.inputs.find(input => input.material === material)!.stored = stored;
             }
         }
@@ -222,7 +222,7 @@ export function load(data: ExportedData) {
 query("#save").addEventListener("click", save);
 export const loadButton = query("#load");
 loadButton.addEventListener("click", () => {
-    const b64 = document.cookie.split("; ").find(cookie => cookie.startsWith("save="))?.split("=")[1];
+    const b64 = window.localStorage.getItem("save");
     if (!b64) return;
 
     const json = atob(b64);

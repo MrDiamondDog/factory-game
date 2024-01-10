@@ -1,0 +1,56 @@
+{
+    "name": "Advanced Circuitry Lab",
+    "description": "Assembles advanced circuits from many rare-earth materials.",
+    "type": "assembly",
+    "inputs": [
+        "Watts",
+        "Copper Ingot",
+        "Gold Ingot",
+        "Silicon Wafer",
+        "Basic Circuit"
+    ],
+    "outputs": [
+        "Advanced Circuit"
+    ],
+    "specs": [
+        "*30w* + *5 Copper Ingot* + *5 Gold Ingot* + *1 Silicon Wafer* + *1 Basic Circuit* + *10s* -> *1 Advanced Circuit*",
+        "Stores *5 Advanced Circuit*"
+    ],
+    "cost": 3000,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Advanced Circuit",
+                    "amount": 1,
+                    "limit": 5
+                }
+            ],
+            "time": {
+                "seconds": 10
+            },
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 30
+                },
+                {
+                    "material": "Copper Ingot",
+                    "amount": 5
+                },
+                {
+                    "material": "Gold Ingot",
+                    "amount": 5
+                },
+                {
+                    "material": "Silicon Wafer",
+                    "amount": 1
+                },
+                {
+                    "material": "Basic Circuit",
+                    "amount": 1
+                }
+            ]
+        }
+    ]
+}

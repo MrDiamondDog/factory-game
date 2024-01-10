@@ -1,0 +1,27 @@
+{
+    "name": "Carbon Extraction Facility",
+    "description": "Extracts carbon from the atmosphere.",
+    "type": "gathering",
+    "outputs": [
+        "Raw Carbon"
+    ],
+    "specs": [
+        "*10s* -> *5 Raw Carbon*",
+        "Stores *50 Raw Carbon*"
+    ],
+    "cost": 1500,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Raw Carbon",
+                    "amount": 5,
+                    "limit": 50
+                }
+            ],
+            "time": {
+                "seconds": 10
+            }
+        }
+    ]
+}

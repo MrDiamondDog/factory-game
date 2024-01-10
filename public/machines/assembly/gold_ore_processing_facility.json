@@ -1,0 +1,36 @@
+{
+    "name": "Gold Ore Processing Facility",
+    "description": "Processes gold into electronic-ready ingots.",
+    "type": "assembly",
+    "inputs": [
+        "Gold Ore"
+    ],
+    "outputs": [
+        "Refined Gold"
+    ],
+    "specs": [
+        "*5 Gold Ore* + *5s* -> *1 Refined Gold*",
+        "Stores *10 Refined Gold*"
+    ],
+    "cost": 5000,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Refined Gold",
+                    "amount": 1,
+                    "limit": 10
+                }
+            ],
+            "time": {
+                "seconds": 5
+            },
+            "requires": [
+                {
+                    "material": "Gold Ore",
+                    "amount": 5
+                }
+            ]
+        }
+    ]
+}

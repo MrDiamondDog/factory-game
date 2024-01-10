@@ -179,7 +179,7 @@ p {
 
 #factories {
     overflow-y: auto !important;
-    height: 93vh;
+    height: 88vh;
 
     & input {
         margin-bottom: 10px;

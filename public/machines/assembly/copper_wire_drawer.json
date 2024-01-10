@@ -1,0 +1,41 @@
+{
+    "name": "Copper Wire Drawer",
+    "description": "Draws out copper wire from copper ingots.",
+    "type": "assembly",
+    "inputs": [
+        "Watts",
+        "Copper Ingot"
+    ],
+    "outputs": [
+        "Copper Wire"
+    ],
+    "specs": [
+        "*5w* + *1 Copper Ingot* + *10s* = *8 Copper Wire*",
+        "Stores *32 Copper Wire*"
+    ],
+    "cost": 400,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Copper Wire",
+                    "amount": 8,
+                    "limit": 32
+                }
+            ],
+            "time": {
+                "seconds": 10
+            },
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 5
+                },
+                {
+                    "material": "Copper Ingot",
+                    "amount": 1
+                }
+            ]
+        }
+    ]
+}

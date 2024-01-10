@@ -1,0 +1,27 @@
+{
+    "name": "Zinc Mine",
+    "description": "A mineshaft very rich in zinc ore.",
+    "type": "gathering",
+    "outputs": [
+        "Zinc Ore"
+    ],
+    "specs": [
+        "*5s* -> *1 Zinc Ore*",
+        "Stores *10 Zinc Ore*"
+    ],
+    "cost": 950,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Zinc Ore",
+                    "amount": 1,
+                    "limit": 10
+                }
+            ],
+            "time": {
+                "seconds": 5
+            }
+        }
+    ]
+}

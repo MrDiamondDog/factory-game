@@ -1,0 +1,41 @@
+{
+    "name": "Steel Foundry",
+    "description": "Forms steel from carbon and iron.",
+    "type": "smelting",
+    "inputs": [
+        "Iron Ingots",
+        "Refined Carbon"
+    ],
+    "outputs": [
+        "Molten Steel"
+    ],
+    "specs": [
+        "*5 Iron Ingots* + *20 Refined Carbon* + *5s* -> *5 Molten Steel*",
+        "Stores *50 Molten Steel*"
+    ],
+    "cost": 2500,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Molten Steel",
+                    "amount": 5,
+                    "limit": 50
+                }
+            ],
+            "time": {
+                "seconds": 5
+            },
+            "requires": [
+                {
+                    "material": "Iron Ingots",
+                    "amount": 5
+                },
+                {
+                    "material": "Refined Carbon",
+                    "amount": 20
+                }
+            ]
+        }
+    ]
+}
