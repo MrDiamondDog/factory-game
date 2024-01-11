@@ -35,8 +35,7 @@ export function getWidth(options: NodeOptions): number {
         };
     }
 
-    if (longest.isIO) ctx.font = "15px roboto mono";
-    else ctx.font = "25px roboto mono";
+    ctx.font = "25px roboto mono";
 
     return measureText(longest.str).x + 50;
 }
