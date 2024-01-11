@@ -1,3 +1,5 @@
+import "./tools";
+
 import { CanvasObject, Vec2 } from "@type/canvas";
 import { Connection, MaterialIO } from "@type/factory";
 import { EventEmitter } from "@util/eventEmitter";

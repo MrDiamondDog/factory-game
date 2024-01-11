@@ -1,0 +1,13 @@
+{
+    "name": "market",
+    "description": "Sells any item instantly, at the cost of some energy.",
+    "type": "economy",
+    "inputs": [
+        "Watts",
+        "Any"
+    ],
+    "specs": [
+        "*5w* -> Sells *1* item"
+    ],
+    "cost": 500
+}

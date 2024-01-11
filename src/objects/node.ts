@@ -176,16 +176,22 @@ export function nodeInit(self: NodeOptions) {
     if (self.cost) {
         const buyButton = queryElement<HTMLButtonElement>(container, `#${self.name.replaceAll(" ", "_")} .node-buy`);
 
-        function setDisabled() {
+        function onMoneyUpdate() {
             buyButton.disabled = money < self.cost;
+            buyButton.textContent = `Buy ($${self.cost})`;
         }
 
-        setDisabled();
-        onMoneyChange.on("change", setDisabled);
+        onMoneyUpdate();
+        onMoneyChange.on("change", onMoneyUpdate);
 
         buyButton.addEventListener("click", () => {
             if (money < self.cost) return;
             setMoney(money - self.cost);
+
+            // up the price to balance the economy
+            if (self.cost < 200) self.cost = Math.round(self.cost * 2);
+            if (self.cost < 500) self.cost = Math.round(self.cost * 1.5);
+            else self.cost = Math.round(self.cost * 1.2);
 
             queryAll<HTMLButtonElement>(".node-add").forEach(node => node.disabled = true);
             queryAll<HTMLButtonElement>(".node-buy").forEach(node => node.disabled = true);
@@ -299,95 +305,101 @@ export function nodeCreatedInit(self: CanvasNode) {
     Mouse.listener.on("up", () => {
         if (!Mouse.dragging || Mouse.dragging.object !== self) return;
 
-        if (Mouse.dragging.io) {
-            for (const obj of objects) {
-                if (!(obj as CanvasNode).inputs) continue;
+        if (!Mouse.dragging.io) {
+            Mouse.dragging = undefined;
+            Camera.unlock();
+            return;
+        }
 
-                const node = obj as CanvasNode;
+        for (const obj of objects) {
+            if (!(obj as CanvasNode).inputs) continue;
 
-                if (Mouse.dragging.io.type !== "input") {
-                    for (let i = 0; i < node.inputs.length; i++) {
-                        const ioPos = getIOPos(node.pos, node.size, i, "input");
+            const node = obj as CanvasNode;
 
-                        if (Vec2.dist(ioPos, Mouse.worldPos) < 10) {
-                            // convert any to the material of the input
-                            if (node.inputs[i].material === "Any")
-                                node.inputs[i].material = Mouse.dragging.io.val.material;
-
-                            // make sure they have the same value
-                            if (Mouse.dragging.io.val.material !== node.inputs[i].material) continue;
-
-                            const fromNode = Mouse.dragging.object as CanvasNode;
-
-                            fromNode.connections.push({
-                                from: {
-                                    node: fromNode,
-                                    type: Mouse.dragging.io.type,
-                                    index: Mouse.dragging.io.index
-                                },
-                                to: {
-                                    node,
-                                    type: "input",
-                                    index: i
-                                }
-                            });
-
-                            node.backConnections.push({
-                                from: {
-                                    node: fromNode,
-                                    type: Mouse.dragging.io.type,
-                                    index: Mouse.dragging.io.index
-                                },
-                                to: {
-                                    node,
-                                    type: "input",
-                                    index: i
-                                }
-                            });
-                        }
-                    }
-                }
-
-                if (Mouse.dragging.io.type === "output") continue;
-                for (let i = 0; i < node.outputs.length; i++) {
-                    const ioPos = getIOPos(node.pos, node.size, i, "output");
+            // check if the mouse is over an input
+            if (Mouse.dragging.io.type !== "input") {
+                for (let i = 0; i < node.inputs.length; i++) {
+                    const ioPos = getIOPos(node.pos, node.size, i, "input");
 
                     if (Vec2.dist(ioPos, Mouse.worldPos) < 10) {
                         // convert any to the material of the input
-                        if (Mouse.dragging.io.val.material === "Any")
-                            Mouse.dragging.io.val.material = node.outputs[i].material;
+                        if (node.inputs[i].material === "Any")
+                            node.inputs[i].material = Mouse.dragging.io.val.material;
 
                         // make sure they have the same value
-                        if (Mouse.dragging.io.val.material !== node.outputs[i].material) continue;
+                        if (Mouse.dragging.io.val.material !== node.inputs[i].material) continue;
 
                         const fromNode = Mouse.dragging.object as CanvasNode;
 
-                        node.connections.push({
+                        fromNode.connections.push({
                             from: {
-                                node,
-                                type: "output",
-                                index: i
-                            },
-                            to: {
                                 node: fromNode,
                                 type: Mouse.dragging.io.type,
                                 index: Mouse.dragging.io.index
+                            },
+                            to: {
+                                node,
+                                type: "input",
+                                index: i
                             }
                         });
 
-                        fromNode.backConnections.push({
+                        node.backConnections.push({
                             from: {
-                                node,
-                                type: "output",
-                                index: i
-                            },
-                            to: {
                                 node: fromNode,
                                 type: Mouse.dragging.io.type,
                                 index: Mouse.dragging.io.index
+                            },
+                            to: {
+                                node,
+                                type: "input",
+                                index: i
                             }
                         });
                     }
+                }
+            }
+
+            // check if the mouse is over an output
+            if (Mouse.dragging.io.type === "output") continue;
+            for (let i = 0; i < node.outputs.length; i++) {
+                const ioPos = getIOPos(node.pos, node.size, i, "output");
+
+                if (Vec2.dist(ioPos, Mouse.worldPos) < 10) {
+                    // convert any to the material of the input
+                    if (Mouse.dragging.io.val.material === "Any")
+                        Mouse.dragging.io.val.material = node.outputs[i].material;
+
+                    // make sure they have the same value
+                    if (Mouse.dragging.io.val.material !== node.outputs[i].material) continue;
+
+                    const fromNode = Mouse.dragging.object as CanvasNode;
+
+                    node.connections.push({
+                        from: {
+                            node,
+                            type: "output",
+                            index: i
+                        },
+                        to: {
+                            node: fromNode,
+                            type: Mouse.dragging.io.type,
+                            index: Mouse.dragging.io.index
+                        }
+                    });
+
+                    fromNode.backConnections.push({
+                        from: {
+                            node,
+                            type: "output",
+                            index: i
+                        },
+                        to: {
+                            node: fromNode,
+                            type: Mouse.dragging.io.type,
+                            index: Mouse.dragging.io.index
+                        }
+                    });
                 }
             }
         }

@@ -4,6 +4,8 @@ export const canvas = query<HTMLCanvasElement>("#factory canvas");
 
 export const ctx = canvas.getContext("2d")!;
 
+export const version = await fetch("version.json").then(res => res.json()).then(json => json.version);
+
 export function getColor(name: string) {
     return getComputedStyle(document.documentElement).getPropertyValue(`--${name}`);
 }

@@ -21,7 +21,7 @@ async function ask(question: string, optional: boolean = true): Promise<string> 
     const factoryName = await ask("Factory Name", true);
     const factoryType = await ask("Factory Type", true);
 
-    const factoryPath = path.join(__dirname, `../public/machines/${factoryType}/${factoryName.replace(/ /g, "_").toLowerCase()}.json`);
+    const factoryPath = path.join(__dirname, `../public/machines/${factoryType}/`);
 
     const json = {
         "name": factoryName,
@@ -107,5 +107,10 @@ async function ask(question: string, optional: boolean = true): Promise<string> 
         });
     }
 
-    fs.writeFileSync(factoryPath, JSON.stringify(json, null, 4));
+    if (!fs.existsSync(factoryPath)) {
+        // create the path
+        fs.mkdirSync(factoryPath);
+    }
+
+    fs.writeFileSync(`${factoryPath}${factoryName.replace(/ /g, "_").toLowerCase()}.json`, JSON.stringify(json, null, 4));
 })();

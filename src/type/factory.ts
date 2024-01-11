@@ -10,7 +10,7 @@ export const MaterialPrices: Record<string, number> = {
     "Copper Ore": 10,
     "Copper Ingot": 25,
     "Copper Wire": 2,
-    "Coal": 10,
+    "Coal": 5,
     "Sand": 5,
     "Silicon Ingot": 50,
     "Silicon Sheet": 25,
@@ -27,6 +27,7 @@ export const MaterialPrices: Record<string, number> = {
     "Basic Circuit": 125,
     "Electric Motor": 175,
     "Advanced Circuit": 250,
+    "Robotic Component": 500,
 };
 
 export type FactoryDefinition = {
@@ -109,6 +110,7 @@ export type ExportedFactory = {
 }
 
 export type ExportedData = {
+    version: string;
     objects: ExportedFactory[];
     storage: Storage;
     money: number;

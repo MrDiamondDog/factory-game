@@ -1,12 +1,13 @@
 import { createObject, defineObject, objects } from "@canvas/object";
 import { FPS, setDebug } from "@canvas/renderer";
+import { money, setMoney } from "@economy/money";
 import { addToStorage, clearStorage, setStorage, storage } from "@economy/storage";
 import { CanvasNode, ExportedData, ExportedFactory, FactoryDefinition, FakeMaterials, MaterialPrices, NodeOptions } from "@type/factory";
-import { query } from "@util/dom";
+import { downloadFile, query } from "@util/dom";
 import { Log, transFlag } from "@util/logger";
 import { roundTo } from "@util/math";
 
-import { money, setMoney } from "@/economy/money";
+import { version } from "@/constants";
 
 import { nodeCreatedInit, nodeDraw, nodeInit, nodeTick } from "./node";
 
@@ -74,6 +75,23 @@ export async function loadMachines() {
                         node.inputs[1].stored--;
 
                         addToStorage(node.inputs[1].material, 1);
+                    }
+
+                    return;
+                }
+
+                if (machine.name === "Market") {
+                    if (node.inputs[1].material === "Any") return;
+
+                    if (node.inputs[0].stored >= 5 && node.inputs[1].stored >= 1) {
+                        node.inputs[0].stored -= 5;
+                        node.inputs[1].stored--;
+
+                        const { material } = node.inputs[0];
+                        const price = MaterialPrices[material];
+                        if (!price) throw new Error(`No price for material ${material}`);
+
+                        setMoney(money + price);
                     }
 
                     return;
@@ -166,7 +184,8 @@ export function save() {
     const out = {
         objects: exports,
         storage,
-        money
+        money,
+        version
     };
 
     const json = JSON.stringify(out);
@@ -226,6 +245,7 @@ export function load(data: ExportedData) {
             }
 
             nodeInstance.connections.push({ from: fromData, to: toData });
+            toData.node.backConnections.push({ from: fromData, to: toData });
         }
     }
 
@@ -252,7 +272,41 @@ loadButton.addEventListener("click", () => {
     load(data);
 });
 
+query("#export").addEventListener("click", () => {
+    save();
+
+    const b64 = window.localStorage.getItem("save");
+    if (!b64) return;
+
+    downloadFile("factory.fsave", b64);
+});
+
+query("#import").addEventListener("click", () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".fsave";
+    input.addEventListener("change", () => {
+        const file = input.files?.[0];
+        if (!file) return;
+
+        file.text().then(text => {
+            const raw = atob(text);
+            const data = JSON.parse(raw) as ExportedData;
+
+            load(data);
+        });
+    });
+    input.click();
+});
+
+let isResetting = false;
 query("#reset").addEventListener("click", () => {
+    isResetting = true;
     window.localStorage.removeItem("save");
     document.location.reload();
+});
+
+window.addEventListener("beforeunload", () => {
+    if (isResetting) return;
+    save();
 });

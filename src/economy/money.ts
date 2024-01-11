@@ -3,7 +3,9 @@ import { MaterialPrices } from "@type/factory";
 import { query, queryAll } from "@util/dom";
 import { EventEmitter } from "@util/eventEmitter";
 
-export let money = 200;
+import { prettify } from "../util/string";
+
+export let money = 100000;
 
 export function setMoney(newMoney: number) {
     money = newMoney;
@@ -13,30 +15,31 @@ export function setMoney(newMoney: number) {
 export const onMoneyChange = new EventEmitter<number>();
 
 const moneyElement = query("#money") as HTMLHeadingElement;
-moneyElement.textContent = `$${money}`;
+moneyElement.textContent = `$${prettify(money)}`;
 onMoneyChange.on("change", money => {
-    moneyElement.textContent = `$${money}`;
+    moneyElement.textContent = `$${prettify(money)}`;
 });
 
 const shopTab = query("#shop-tab") as HTMLDivElement;
 
 function renderShop() {
-    shopTab.innerHTML = "<h1>Sell</h1>" + Object.keys(MaterialPrices).map((material: string) => {
-        if (material === "Any" || material === "Watts") return "";
-        return `
-        <div class="shop-item">
-            <h3>${material}</h3>
-            <p class="price">$${MaterialPrices[material]}</p>
-            <p>${storage[material]} owned</p>
-            <div class="sell-buttons" data-material="${material}">
-                <button class="sell-one">x1</button>
-                <button class="sell-five">x5</button>
-                <button class="sell-ten">x10</button>
-                <button class="sell-all">All</button>
-            </div>
-        </div>
-        `;
-    }).join("");
+    shopTab.innerHTML = "<h1>Sell</h1>" + Object.keys(MaterialPrices)
+        .sort((a, b) => MaterialPrices[a] - MaterialPrices[b])
+        .map((material: string) => {
+            return `
+                <div class="shop-item">
+                    <h3>${material}</h3>
+                    <p class="price">$${MaterialPrices[material]}</p>
+                    <p>${storage[material]} owned</p>
+                    <div class="sell-buttons" data-material="${material}">
+                        <button class="sell-one">x1</button>
+                        <button class="sell-five">x5</button>
+                        <button class="sell-ten">x10</button>
+                        <button class="sell-all">All</button>
+                    </div>
+                </div>
+            `;
+        }).join("");
 
     const sellButtons = queryAll<HTMLDivElement>(".sell-buttons");
 

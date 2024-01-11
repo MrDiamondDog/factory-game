@@ -117,8 +117,8 @@ function draw() {
     }
 
     // Using setTimeout allows you to unfocus this tab and still have it run
-    // requestAnimationFrame(draw);
-    setTimeout(draw, 1000 / (FPS * 2));
+    // ...but setTimeout ends up being less accurate than requestAnimationFrame, meaning the TPS is all over the place
+    requestAnimationFrame(draw);
 }
 
 Camera.update();

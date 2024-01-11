@@ -55,7 +55,6 @@ export function removeFromStorage(material: string, amount: number) {
 }
 
 for (const material of Object.keys(MaterialPrices)) {
-    if (material === "Watts" || material === "Any") continue;
     storageContainer.appendChild(materialToHTML(material));
 }
 
