@@ -188,7 +188,7 @@ export function nodeInit(self: NodeOptions) {
             if (money < self.cost) return;
             setMoney(money - self.cost);
 
-            // up the price to balance the economy
+            // up the price to balance the economy (fuck you kreegle)
             if (self.cost < 200) self.cost = Math.round(self.cost * 2);
             if (self.cost < 500) self.cost = Math.round(self.cost * 1.5);
             else self.cost = Math.round(self.cost * 1.2);

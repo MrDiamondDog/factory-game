@@ -192,6 +192,7 @@ export function save() {
     const b64 = btoa(json);
 
     window.localStorage.setItem("save", b64);
+    window.localStorage.setItem("last-version", version);
 }
 
 export function load(data: ExportedData) {

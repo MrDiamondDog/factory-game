@@ -1,3 +1,7 @@
 {
-    "version": "0.1"
+    "version": "0.2",
+    "changelog": [
+        "Added Changelog",
+        "Balancing: Price of factories increases with each purchase (fuck you kreegle)"
+    ]
 }

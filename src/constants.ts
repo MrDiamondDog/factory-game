@@ -4,7 +4,21 @@ export const canvas = query<HTMLCanvasElement>("#factory canvas");
 
 export const ctx = canvas.getContext("2d")!;
 
-export const version = await fetch("version.json").then(res => res.json()).then(json => json.version);
+export const { version, changelog } = await fetch("version.json")
+    .then(res => res.json())
+    .then(json => ({ version: json.version as string, changelog: json.changelog as string[] }));
+
+const lastVersion = window.localStorage.getItem("last-version");
+if (lastVersion !== version) {
+    const changelogElem = query("#changelog");
+    changelogElem.style.display = "block";
+
+    query<HTMLButtonElement>("#changelog-close").addEventListener("click", () => {
+        changelogElem.style.display = "none";
+    });
+
+    query("#changelog-stuff").innerHTML = changelog.map(line => `- ${line}`).join("<br>");
+}
 
 export function getColor(name: string) {
     return getComputedStyle(document.documentElement).getPropertyValue(`--${name}`);
