@@ -2,38 +2,39 @@ import { Storage } from "@economy/storage";
 
 import { CanvasObject, ObjectOptions, Vec2 } from "./canvas";
 
-export enum MaterialType {
-    Any = "Any",
-    Watts = "Watts",
-    IronOre = "Iron Ore",
-    CopperOre = "Copper Ore",
-    CopperIngot = "Copper Ingot",
-    Coal = "Coal",
-    Sand = "Sand",
-    SiliconIngot = "Silicon Ingot",
-    SiliconSheet = "Silicon Sheet",
-    BasicCircuit = "Basic Circuit",
-}
+export const FakeMaterials = ["Any", "Watts"];
 
-export const Materials: Record<keyof typeof MaterialType, number> = {
-    Any: 0,
-    Watts: 0,
-    IronOre: 10,
-    CopperOre: 10,
-    CopperIngot: 25,
-    Coal: 10,
-    Sand: 5,
-    SiliconSheet: 25,
-    SiliconIngot: 50,
-    BasicCircuit: 125,
+export const MaterialPrices: Record<string, number> = {
+    "Iron Ore": 10,
+    "Iron Ingot": 25,
+    "Copper Ore": 10,
+    "Copper Ingot": 25,
+    "Copper Wire": 2,
+    "Coal": 10,
+    "Sand": 5,
+    "Silicon Ingot": 50,
+    "Silicon Sheet": 25,
+    "Silicon Wafer": 25,
+    "Zinc Ore": 25,
+    "Zinc Ingot": 50,
+    "Gold Ore": 100,
+    "Refined Gold": 150,
+    "Molten Steel": 50,
+    "Steel Ingot": 150,
+    "Raw Carbon": 25,
+    "Refined Carbon": 50,
+    "Battery": 75,
+    "Basic Circuit": 125,
+    "Electric Motor": 175,
+    "Advanced Circuit": 250,
 };
 
 export type FactoryDefinition = {
     name: string,
     description: string,
     type: string,
-    inputs?: MaterialType[],
-    outputs?: MaterialType[],
+    inputs?: string[],
+    outputs?: string[],
     specs: string[],
     cost?: number,
     produces?: {
@@ -47,13 +48,13 @@ export type FactoryDefinition = {
 };
 
 export type MaterialIO = {
-    material?: MaterialType;
+    material?: string;
     any?: boolean;
     stored: number;
 };
 
 export type RecipeMaterial = {
-    material: MaterialType;
+    material: string;
     amount: number;
 };
 

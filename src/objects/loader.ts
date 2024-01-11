@@ -1,7 +1,7 @@
 import { createObject, defineObject, objects } from "@canvas/object";
 import { FPS, setDebug } from "@canvas/renderer";
 import { addToStorage, clearStorage, setStorage, storage } from "@economy/storage";
-import { CanvasNode, ExportedData, ExportedFactory, FactoryDefinition, MaterialType, NodeOptions } from "@type/factory";
+import { CanvasNode, ExportedData, ExportedFactory, FactoryDefinition, FakeMaterials, MaterialPrices, NodeOptions } from "@type/factory";
 import { query } from "@util/dom";
 import { Log, transFlag } from "@util/logger";
 import { roundTo } from "@util/math";
@@ -21,6 +21,10 @@ export async function loadMachines() {
         machines.push(machine);
     }
 
+    machines.sort((a, b) => a.cost - b.cost);
+
+    const unknownMaterials: string[] = [];
+
     for (const machine of machines) {
         Log("loader", `Loading machine ${machine.name}`);
 
@@ -30,11 +34,25 @@ export async function loadMachines() {
             if (produce.time.seconds && produce.time.ticks) throw new Error(`Only one of seconds or ticks must be defined for ${machine.name}`);
         });
 
+        machine.inputs?.forEach(input => {
+            if (FakeMaterials.includes(input)) return;
+            if (!Object.keys(MaterialPrices).includes(input) && !unknownMaterials.includes(input)) {
+                unknownMaterials.push(input);
+            }
+        });
+
+        machine.outputs?.forEach(output => {
+            if (FakeMaterials.includes(output)) return;
+            if (!Object.keys(MaterialPrices).includes(output) && !unknownMaterials.includes(output)) {
+                unknownMaterials.push(output);
+            }
+        });
+
         defineObject<NodeOptions>({
             name: machine.name,
             description: machine.description,
             type: machine.type,
-            inputs: machine.inputs?.map(input => ({ stored: 0, material: input, any: input === MaterialType.Any })),
+            inputs: machine.inputs?.map(input => ({ stored: 0, material: input, any: input === "Any" })),
             outputs: machine.outputs?.map(output => ({ stored: 0, material: output })),
             specs: machine.specs,
             cost: machine.cost,
@@ -115,6 +133,10 @@ export async function loadMachines() {
             },
         });
     }
+
+    if (unknownMaterials.length > 0) {
+        Log("loader", `Unknown materials: ${unknownMaterials.join(", ")}`);
+    }
 }
 
 export function save() {
@@ -176,8 +198,7 @@ export function load(data: ExportedData) {
         if (node.inputs) {
             for (const input of node.inputs) {
                 const { material, stored } = input;
-                console.log(input.material, nodeInstance.inputs);
-                nodeInstance.inputs.find(input => input.material === material)!.stored = stored;
+                nodeInstance.inputs.find(input => input.material === material || input.material === "Any")!.stored = stored;
             }
         }
 

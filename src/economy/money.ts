@@ -1,5 +1,5 @@
 import { addToStorage, storage, storageListener } from "@economy/storage";
-import { Materials,MaterialType } from "@type/factory";
+import { MaterialPrices } from "@type/factory";
 import { query, queryAll } from "@util/dom";
 import { EventEmitter } from "@util/eventEmitter";
 
@@ -20,13 +20,13 @@ onMoneyChange.on("change", money => {
 const shopTab = query("#shop-tab") as HTMLDivElement;
 
 function renderShop() {
-    shopTab.innerHTML = "<h1>Sell</h1>" + Object.keys(Materials).map((material: keyof typeof MaterialType) => {
+    shopTab.innerHTML = "<h1>Sell</h1>" + Object.keys(MaterialPrices).map((material: string) => {
         if (material === "Any" || material === "Watts") return "";
         return `
         <div class="shop-item">
-            <h3>${MaterialType[material]}</h3>
-            <p class="price">$${Materials[material]}</p>
-            <p>${storage[MaterialType[material]]} owned</p>
+            <h3>${material}</h3>
+            <p class="price">$${MaterialPrices[material]}</p>
+            <p>${storage[material]} owned</p>
             <div class="sell-buttons" data-material="${material}">
                 <button class="sell-one">x1</button>
                 <button class="sell-five">x5</button>
@@ -40,8 +40,8 @@ function renderShop() {
     const sellButtons = queryAll<HTMLDivElement>(".sell-buttons");
 
     for (const button of sellButtons) {
-        const material = button.dataset.material as keyof typeof MaterialType;
-        const materialAmount = storage[MaterialType[material]];
+        const { material } = button.dataset;
+        const materialAmount = storage[material];
 
         const sellOne = button.querySelector<HTMLButtonElement>(".sell-one");
         const sellFive = button.querySelector<HTMLButtonElement>(".sell-five");
@@ -55,26 +55,26 @@ function renderShop() {
 
         sellOne.addEventListener("click", () => {
             if (materialAmount >= 1) {
-                setMoney(money + Materials[material]);
-                addToStorage(MaterialType[material], -1);
+                setMoney(money + MaterialPrices[material]);
+                addToStorage(material, -1);
             }
         });
         sellFive.addEventListener("click", () => {
             if (materialAmount >= 5) {
-                setMoney(money + Materials[material] * 5);
-                addToStorage(MaterialType[material], -5);
+                setMoney(money + MaterialPrices[material] * 5);
+                addToStorage(material, -5);
             }
         });
         sellTen.addEventListener("click", () => {
             if (materialAmount >= 10) {
-                setMoney(money + Materials[material] * 10);
-                addToStorage(MaterialType[material], -10);
+                setMoney(money + MaterialPrices[material] * 10);
+                addToStorage(material, -10);
             }
         });
         sellAll.addEventListener("click", () => {
             if (materialAmount >= 1) {
-                setMoney(money + Materials[material] * materialAmount);
-                addToStorage(MaterialType[material], -materialAmount);
+                setMoney(money + MaterialPrices[material] * materialAmount);
+                addToStorage(material, -materialAmount);
             }
         });
     }

@@ -11,7 +11,7 @@
     ],
     "specs": [
         "*5 Copper Ore* + *10w* + *2s* -> *1 Copper Ingot*",
-        "Store *10 Copper Ingots*"
+        "Stores *10 Copper Ingots*"
     ],
     "cost": 250,
     "produces": [

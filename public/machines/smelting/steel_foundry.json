@@ -3,14 +3,14 @@
     "description": "Forms steel from carbon and iron.",
     "type": "smelting",
     "inputs": [
-        "Iron Ingots",
+        "Iron Ingot",
         "Refined Carbon"
     ],
     "outputs": [
         "Molten Steel"
     ],
     "specs": [
-        "*5 Iron Ingots* + *20 Refined Carbon* + *5s* -> *5 Molten Steel*",
+        "*5 Iron Ingot* + *20 Refined Carbon* + *5s* -> *5 Molten Steel*",
         "Stores *50 Molten Steel*"
     ],
     "cost": 2500,
@@ -28,7 +28,7 @@
             },
             "requires": [
                 {
-                    "material": "Iron Ingots",
+                    "material": "Iron Ingot",
                     "amount": 5
                 },
                 {

@@ -1,5 +1,5 @@
 {
-    "name": "Copper Smeltry",
+    "name": "Iron Smeltry",
     "description": "A furnace made for turning iron ore into ingots.",
     "type": "smelting",
     "inputs": [
@@ -11,7 +11,7 @@
     ],
     "specs": [
         "*5 Iron Ore* + *15w* + *2s* -> *1 Iron Ingot*",
-        "Store *10 Iron Ingots*"
+        "Stores *10 Iron Ingot*"
     ],
     "cost": 250,
     "produces": [

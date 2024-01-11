@@ -4,11 +4,10 @@ import { Mouse } from "@canvas/input";
 import { createObject, objects } from "@canvas/object";
 import { money, onMoneyChange, setMoney } from "@economy/money";
 import { Vec2 } from "@type/canvas";
-import { CanvasNode, MaterialType, NodeOptions } from "@type/factory";
+import { CanvasNode, NodeOptions } from "@type/factory";
 import { weave } from "@util/array";
 import { drawCircle, inLine, inside, line, measureText } from "@util/canvas";
 import { query, queryAll, queryElement } from "@util/dom";
-import { Log } from "@util/logger";
 import { roundTo } from "@util/math";
 
 import { colors, ctx, transferSpeed } from "@/constants";
@@ -180,7 +179,6 @@ export function nodeInit(self: NodeOptions) {
 
         function setDisabled() {
             buyButton.disabled = money < self.cost;
-            Log("set disabled", `money: ${money} cost: ${self.cost}`);
         }
 
         setDisabled();
@@ -314,7 +312,7 @@ export function nodeCreatedInit(self: CanvasNode) {
 
                         if (Vec2.dist(ioPos, Mouse.worldPos) < 10) {
                             // convert any to the material of the input
-                            if (node.inputs[i].material === MaterialType.Any && Mouse.dragging.io.val.material !== MaterialType.Watts)
+                            if (node.inputs[i].material === "Any")
                                 node.inputs[i].material = Mouse.dragging.io.val.material;
 
                             // make sure they have the same value
@@ -357,7 +355,7 @@ export function nodeCreatedInit(self: CanvasNode) {
 
                     if (Vec2.dist(ioPos, Mouse.worldPos) < 10) {
                         // convert any to the material of the input
-                        if (Mouse.dragging.io.val.material === MaterialType.Any && node.outputs[i].material !== MaterialType.Watts)
+                        if (Mouse.dragging.io.val.material === "Any")
                             Mouse.dragging.io.val.material = node.outputs[i].material;
 
                         // make sure they have the same value

@@ -5,7 +5,7 @@
     "inputs": [
         "Watts",
         "Copper Ingot",
-        "Gold Ingot",
+        "Refined Gold",
         "Silicon Wafer",
         "Basic Circuit"
     ],
@@ -13,7 +13,7 @@
         "Advanced Circuit"
     ],
     "specs": [
-        "*30w* + *5 Copper Ingot* + *5 Gold Ingot* + *1 Silicon Wafer* + *1 Basic Circuit* + *10s* -> *1 Advanced Circuit*",
+        "*30w* + *5 Copper Ingot* + *5 Refined Gold* + *1 Silicon Wafer* + *1 Basic Circuit* + *10s* -> *1 Advanced Circuit*",
         "Stores *5 Advanced Circuit*"
     ],
     "cost": 3000,
@@ -39,7 +39,7 @@
                     "amount": 5
                 },
                 {
-                    "material": "Gold Ingot",
+                    "material": "Refined Gold",
                     "amount": 5
                 },
                 {

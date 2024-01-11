@@ -1,0 +1,51 @@
+{
+    "name": "Robotic Assembly Plant",
+    "description": "Assembles various types of robots made of advanced circuitry.",
+    "type": "assembly",
+    "inputs": [
+        "Watts",
+        "Steel Ingot",
+        "Electric Motor",
+        "Advanced Circuit"
+    ],
+    "outputs": [
+        "Robotic Component"
+    ],
+    "specs": [
+        "*50w* + *5 Steel Ingot* + *5 Electric Motor* + *2 Advanced Circuit* + *5s* -> *1 Robotic Component*",
+        "Stores *5 Robotic Component*"
+    ],
+    "cost": 6000,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Robotic Component",
+                    "amount": 1,
+                    "limit": 5
+                }
+            ],
+            "time": {
+                "seconds": 5
+            },
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 50
+                },
+                {
+                    "material": "Steel Ingot",
+                    "amount": 5
+                },
+                {
+                    "material": "Electric Motor",
+                    "amount": 5
+                },
+                {
+                    "material": "Advanced Circuit",
+                    "amount": 2
+                }
+            ]
+        }
+    ]
+}

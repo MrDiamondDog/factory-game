@@ -9,7 +9,7 @@
         "Watts"
     ],
     "specs": [
-        "*1 Coal* + *5s* -> *5 Watts*",
+        "*5 Coal* + *5s* -> *5 Watts*",
         "Stores *50w*"
     ],
     "cost": 50,

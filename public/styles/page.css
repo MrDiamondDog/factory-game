@@ -179,7 +179,7 @@ p {
 
 #factories {
     overflow-y: auto !important;
-    height: 88vh;
+    height: 95vh;
 
     & input {
         margin-bottom: 10px;
@@ -232,6 +232,11 @@ strong {
 
 .ctx-menu {
     position: absolute;
+}
+
+#shop-tab {
+    height: 100%;
+    overflow: scroll;
 }
 
 .shop-item {
