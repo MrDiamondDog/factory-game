@@ -9,7 +9,7 @@
         "Watts"
     ],
     "specs": [
-        "*5 Coal* + *5s* -> *5 Watts*",
+        "*5 Coal* + *3s* -> *5 Watts*",
         "Stores *50w*"
     ],
     "cost": 50,
@@ -23,12 +23,12 @@
                 }
             ],
             "time": {
-                "seconds": 5
+                "seconds": 3
             },
             "requires": [
                 {
                     "material": "Coal",
-                    "amount": 1
+                    "amount": 5
                 }
             ]
         }
