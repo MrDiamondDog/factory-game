@@ -3,13 +3,14 @@
     "description": "Processes gold into electronic-ready ingots.",
     "type": "assembly",
     "inputs": [
+        "Watts",
         "Gold Ore"
     ],
     "outputs": [
         "Refined Gold"
     ],
     "specs": [
-        "*5 Gold Ore* + *5s* -> *1 Refined Gold*",
+        "*40w* + *5 Gold Ore* + *5s* -> *1 Refined Gold*",
         "Stores *10 Refined Gold*"
     ],
     "cost": 5000,
@@ -29,6 +30,10 @@
                 {
                     "material": "Gold Ore",
                     "amount": 5
+                },
+                {
+                    "material": "Watts",
+                    "amount": 40
                 }
             ]
         }
