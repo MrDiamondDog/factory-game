@@ -13,6 +13,7 @@ export function setMoney(newMoney: number) {
 export const onMoneyChange = new EventEmitter<number>();
 
 const moneyElement = query("#money") as HTMLHeadingElement;
+moneyElement.textContent = `$${money}`;
 onMoneyChange.on("change", money => {
     moneyElement.textContent = `$${money}`;
 });

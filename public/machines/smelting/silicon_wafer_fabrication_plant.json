@@ -3,13 +3,14 @@
     "description": "Fabricates silicon wafers designed for advanced electronics.",
     "type": "smelting",
     "inputs": [
+        "Watts",
         "Silicon Sheet"
     ],
     "outputs": [
         "Silicon Wafer"
     ],
     "specs": [
-        "*2 Silicon Sheet* + *10s* -> *1 Silicon Wafer*",
+        "*30w* + *2 Silicon Sheet* + *10s* -> *1 Silicon Wafer*",
         "Stores *10 Silicon Wafer*"
     ],
     "cost": 2500,
@@ -29,6 +30,10 @@
                 {
                     "material": "Silicon Sheet",
                     "amount": 2
+                },
+                {
+                    "material": "Watts",
+                    "amount": 30
                 }
             ]
         }
