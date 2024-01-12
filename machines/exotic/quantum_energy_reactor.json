@@ -1,0 +1,51 @@
+{
+    "name": "Quantum Energy Reactor",
+    "description": "The Quantum Energy Reactor is a pinnacle of advanced energy technology, harnessing the extraordinary power of controlled nuclear fusion.",
+    "type": "exotic",
+    "inputs": [
+        "Watts",
+        "Uranium-235 Fuel Rod",
+        "Thorium Ingot",
+        "Robotic Component"
+    ],
+    "outputs": [
+        "Quantum Energy Core"
+    ],
+    "specs": [
+        "*75w* + *10 Uranium-235 Fuel Rod* + *5 Thorium Ingot* + *5 Robotic Component* + *10s* -> *1 Quantum Energy Core*",
+        "Stores *3 Quantum Energy Core*"
+    ],
+    "cost": 10000,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Quantum Energy Core",
+                    "amount": 1,
+                    "limit": 3
+                }
+            ],
+            "time": {
+                "seconds": 10
+            },
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 75
+                },
+                {
+                    "material": "Uranium-235 Fuel Rod",
+                    "amount": 10
+                },
+                {
+                    "material": "Thorium Ingot",
+                    "amount": 5
+                },
+                {
+                    "material": "Robotic Component",
+                    "amount": 5
+                }
+            ]
+        }
+    ]
+}

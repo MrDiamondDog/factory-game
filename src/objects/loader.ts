@@ -11,16 +11,10 @@ import { version } from "@/constants";
 
 import { nodeCreatedInit, nodeDraw, nodeInit, nodeTick } from "./node";
 
-export const listPath = "machines/list.json";
+export const listPath = "machines.json";
 
 export async function loadMachines() {
-    const list = await fetch(listPath).then(r => r.json()) as string[];
-
-    const machines: FactoryDefinition[] = [];
-    for (const file of list) {
-        const machine = await fetch(`machines/${file}`).then(r => r.json()) as FactoryDefinition;
-        machines.push(machine);
-    }
+    const machines = await fetch(listPath).then(r => r.json()) as FactoryDefinition[];
 
     machines.sort((a, b) => a.cost - b.cost);
 

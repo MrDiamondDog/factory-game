@@ -1,0 +1,46 @@
+{
+    "name": "Nanofabrication Nexus",
+    "description": "The pinnacle of nanotechnology, the Nanofabrication Nexus seamlessly weaves together Quantum Energy Cores and Exotic Elements, meticulously crafting Hyper-Advanced Nanomaterial.",
+    "type": "exotic",
+    "inputs": [
+        "Watts",
+        "Quantum Energy Core",
+        "Exotic Element"
+    ],
+    "outputs": [
+        "Hyper-Advanced Nanomaterial"
+    ],
+    "specs": [
+        "*250w* + *2 Quantum Energy Core* + *5 Exotic Element* + *10s* -> *1 Hyper-Advanced Nanomaterial*",
+        "Stores *5 Hyper-Advanced Nanomaterial*"
+    ],
+    "cost": 120000,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Hyper-Advanced Nanomaterial",
+                    "amount": 1,
+                    "limit": 5
+                }
+            ],
+            "time": {
+                "seconds": 10
+            },
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 250
+                },
+                {
+                    "material": "Quantum Energy Core",
+                    "amount": 2
+                },
+                {
+                    "material": "Exotic Element",
+                    "amount": 5
+                }
+            ]
+        }
+    ]
+}

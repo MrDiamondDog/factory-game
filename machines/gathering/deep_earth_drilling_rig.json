@@ -1,0 +1,36 @@
+{
+    "name": "Deep Earth Drilling Rig",
+    "description": "Drills deep into the Earth's crust to collect raw core samples, potentially containing rare earth minerals.",
+    "type": "gathering",
+    "inputs": [
+        "Watts"
+    ],
+    "outputs": [
+        "Raw Earth Core Sample"
+    ],
+    "specs": [
+        "*100w* + *30s* -> *1 Raw Earth Core Sample*",
+        "Stores *10 Raw Earth Core Sample*"
+    ],
+    "cost": 15000,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Raw Earth Core Sample",
+                    "amount": 1,
+                    "limit": 10
+                }
+            ],
+            "time": {
+                "seconds": 30
+            },
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 100
+                }
+            ]
+        }
+    ]
+}

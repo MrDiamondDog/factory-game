@@ -21,7 +21,7 @@ async function ask(question: string, optional: boolean = true): Promise<string> 
     const factoryName = await ask("Factory Name", true);
     const factoryType = await ask("Factory Type", true);
 
-    const factoryPath = path.join(__dirname, `../public/machines/${factoryType}/`);
+    const factoryPath = path.join(__dirname, `../machines/${factoryType}/`);
 
     const json = {
         "name": factoryName,

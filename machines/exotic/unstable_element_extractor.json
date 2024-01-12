@@ -1,0 +1,41 @@
+{
+    "name": "Unstable Element Extractor",
+    "description": "Extracts unstable elemental essence from rare earth minerals, laying the foundation for exotic elements.",
+    "type": "exotic",
+    "inputs": [
+        "Watts",
+        "Rare Earth Mineral"
+    ],
+    "outputs": [
+        "Unstable Elemental Essence"
+    ],
+    "specs": [
+        "*100w* + *10 Rare Earth Mineral* + *10s* -> *3 Unstable Elemental Essence*",
+        "Stores *9 Unstable Elemental Essence*"
+    ],
+    "cost": 25000,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Unstable Elemental Essence",
+                    "amount": 3,
+                    "limit": 9
+                }
+            ],
+            "time": {
+                "seconds": 10
+            },
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 100
+                },
+                {
+                    "material": "Rare Earth Mineral",
+                    "amount": 10
+                }
+            ]
+        }
+    ]
+}

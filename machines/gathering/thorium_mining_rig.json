@@ -1,0 +1,27 @@
+{
+    "name": "Thorium Mining Rig",
+    "description": "A quarry full of thorium.",
+    "type": "gathering",
+    "outputs": [
+        "Thorium Ore"
+    ],
+    "specs": [
+        "*10s* -> *5 Thorium Ore*",
+        "Stores *50 Thorium Ore*"
+    ],
+    "cost": 6500,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Thorium Ore",
+                    "amount": 5,
+                    "limit": 50
+                }
+            ],
+            "time": {
+                "seconds": 10
+            }
+        }
+    ]
+}

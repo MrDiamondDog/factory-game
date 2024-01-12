@@ -1,0 +1,41 @@
+{
+    "name": "Thorium Refinery",
+    "description": "A specialized facility for refining thorium.",
+    "type": "smelting",
+    "inputs": [
+        "Watts",
+        "Thorium Ore"
+    ],
+    "outputs": [
+        "Thorium Ingot"
+    ],
+    "specs": [
+        "*25w* + *5 Thorium Ore* + *5s* -> *1 Thorium Ingot*",
+        "Stores *10 Thorium Ingot*"
+    ],
+    "cost": 7000,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Thorium Ingot",
+                    "amount": 1,
+                    "limit": 10
+                }
+            ],
+            "time": {
+                "seconds": 5
+            },
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 25
+                },
+                {
+                    "material": "Thorium Ore",
+                    "amount": 5
+                }
+            ]
+        }
+    ]
+}

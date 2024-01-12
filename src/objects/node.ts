@@ -12,6 +12,8 @@ import { roundTo } from "@util/math";
 
 import { colors, ctx, transferSpeed } from "@/constants";
 
+import { prettify } from "./../util/string";
+
 const container = query<HTMLDivElement>("#factories");
 
 export function getWidth(options: NodeOptions): number {
@@ -178,7 +180,7 @@ export function nodeInit(self: NodeOptions) {
 
         function onMoneyUpdate() {
             buyButton.disabled = money < self.cost;
-            buyButton.textContent = `Buy ($${self.cost})`;
+            buyButton.textContent = `Buy ($${prettify(self.cost)})`;
         }
 
         onMoneyUpdate();
@@ -435,7 +437,7 @@ export function nodeToHTML(node: NodeOptions) {
                 ${val[1] ? `<td class="output">${val[1].material}</td>` : "<td></td>"}
             </tr>`).join("")}
         </tbody></table>` : ""}
-        ${node.cost ? `<button class="node-buy">Buy ($${node.cost})</button>` : "<button class=\"node-add\">Add</button>"}
+        ${node.cost ? `<button class="node-buy">Buy ($${prettify(node.cost)})</button>` : "<button class=\"node-add\">Add</button>"}
     `;
     return div;
 }

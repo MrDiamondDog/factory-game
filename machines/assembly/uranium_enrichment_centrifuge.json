@@ -1,0 +1,41 @@
+{
+    "name": "Uranium Enrichment Centrifuge",
+    "description": "The Uranium Enrichment Centrifuge extracts highly coveted Uranium-235 from standard Uranium.",
+    "type": "assembly",
+    "inputs": [
+        "Watts",
+        "Uranium Ingot"
+    ],
+    "outputs": [
+        "Uranium-235"
+    ],
+    "specs": [
+        "*25w* + *3 Uranium Ingot* + *30s* -> *1 Uranium-235*",
+        "Stores *10 Uranium-235*"
+    ],
+    "cost": 8000,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Uranium-235",
+                    "amount": 1,
+                    "limit": 10
+                }
+            ],
+            "time": {
+                "seconds": 30
+            },
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 25
+                },
+                {
+                    "material": "Uranium Ingot",
+                    "amount": 3
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,41 @@
+{
+    "name": "Uranium Refinery",
+    "description": "A specialized facility used for turing raw uranium into solid ingots.",
+    "type": "smelting",
+    "inputs": [
+        "Watts",
+        "Uranium Ore"
+    ],
+    "outputs": [
+        "Uranium Ingot"
+    ],
+    "specs": [
+        "*50w* + *10 Uranium Ore* + *10s* -> *1 Uranium Ingot*",
+        "Stores *5 Uranium Ingot*"
+    ],
+    "cost": 7500,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Uranium Ingot",
+                    "amount": 1,
+                    "limit": 5
+                }
+            ],
+            "time": {
+                "seconds": 10
+            },
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 50
+                },
+                {
+                    "material": "Uranium Ore",
+                    "amount": 10
+                }
+            ]
+        }
+    ]
+}

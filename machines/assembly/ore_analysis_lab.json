@@ -1,0 +1,41 @@
+{
+    "name": "Ore Analysis Lab",
+    "description": "Analyzes raw core samples using advanced spectroscopy to identify and extract refined deposits rich in rare earth minerals.",
+    "type": "assembly",
+    "inputs": [
+        "Watts",
+        "Raw Earth Core Sample"
+    ],
+    "outputs": [
+        "Refined Earth Mineral Deposit"
+    ],
+    "specs": [
+        "*100w* + *1 Raw Earth Core Sample* + *60s* -> *1 Refined Earth Mineral Deposit*",
+        "Stores *3 Refined Earth Mineral Deposit*"
+    ],
+    "cost": 25000,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Refined Earth Mineral Deposit",
+                    "amount": 1,
+                    "limit": 3
+                }
+            ],
+            "time": {
+                "seconds": 60
+            },
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 100
+                },
+                {
+                    "material": "Raw Earth Core Sample",
+                    "amount": 1
+                }
+            ]
+        }
+    ]
+}

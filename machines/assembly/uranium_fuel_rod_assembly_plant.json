@@ -1,0 +1,46 @@
+{
+    "name": "Uranium Fuel Rod Assembly Plant",
+    "description": "A specialized facility that melts down Uranium-235 and shoves them in a rod.",
+    "type": "assembly",
+    "inputs": [
+        "Watts",
+        "Iron Ingot",
+        "Uranium-235"
+    ],
+    "outputs": [
+        "Uranium-235 Fuel Rod"
+    ],
+    "specs": [
+        "*50w* + *2 Iron Ingot* + *5 Uranium-235* + *15s* -> *1 Uranium-235 Fuel Rod*",
+        "Stores *2 Uranium-235 Fuel Rod*"
+    ],
+    "cost": 10000,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Uranium-235 Fuel Rod",
+                    "amount": 1,
+                    "limit": 2
+                }
+            ],
+            "time": {
+                "seconds": 15
+            },
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 50
+                },
+                {
+                    "material": "Iron Ingot",
+                    "amount": 2
+                },
+                {
+                    "material": "Uranium-235",
+                    "amount": 5
+                }
+            ]
+        }
+    ]
+}

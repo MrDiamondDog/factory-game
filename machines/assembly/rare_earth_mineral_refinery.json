@@ -1,0 +1,41 @@
+{
+    "name": "Rare Earth Mineral Refinery",
+    "description": "Utilizes chemical separation techniques to extract and refine rare earth minerals from the identified deposits, providing a valuable resource for advanced technologies.",
+    "type": "assembly",
+    "inputs": [
+        "Watts",
+        "Refined Earth Mineral Deposit"
+    ],
+    "outputs": [
+        "Rare Earth Mineral"
+    ],
+    "specs": [
+        "*200w* + *1 Refined Earth Mineral Deposit* + *30s* -> *5 Rare Earth Mineral*",
+        "Stores *50 Rare Earth Mineral*"
+    ],
+    "cost": 50000,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Rare Earth Mineral",
+                    "amount": 5,
+                    "limit": 50
+                }
+            ],
+            "time": {
+                "seconds": 30
+            },
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 200
+                },
+                {
+                    "material": "Refined Earth Mineral Deposit",
+                    "amount": 1
+                }
+            ]
+        }
+    ]
+}

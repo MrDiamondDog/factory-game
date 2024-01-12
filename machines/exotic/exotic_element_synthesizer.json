@@ -1,0 +1,41 @@
+{
+    "name": "Exotic Element Synthesizer",
+    "description": "Utilizes a sophisticated process with hyper-advanced nanomaterial to synthesize the exotic elements, unlocking their unique properties for advanced technologies.",
+    "type": "exotic",
+    "inputs": [
+        "Watts",
+        "Stable Elemental Matrix"
+    ],
+    "outputs": [
+        "Exotic Element"
+    ],
+    "specs": [
+        "*200w* + *1 Stable Elemental Matrix* + *10s* -> *2 Exotic Element*",
+        "Stores *10 Exotic Element*"
+    ],
+    "cost": 100000,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Exotic Element",
+                    "amount": 2,
+                    "limit": 10
+                }
+            ],
+            "time": {
+                "seconds": 10
+            },
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 200
+                },
+                {
+                    "material": "Stable Elemental Matrix",
+                    "amount": 1
+                }
+            ]
+        }
+    ]
+}

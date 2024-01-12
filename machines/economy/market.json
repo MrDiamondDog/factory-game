@@ -1,5 +1,5 @@
 {
-    "name": "market",
+    "name": "Market",
     "description": "Sells any item instantly, at the cost of some energy.",
     "type": "economy",
     "inputs": [

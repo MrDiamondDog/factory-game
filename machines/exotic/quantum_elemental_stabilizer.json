@@ -1,0 +1,41 @@
+{
+    "name": "Quantum Elemental Stabilizer",
+    "description": "Stabilizes the volatile essence using advanced quantum catalysts, forming a stable elemental matrix ready for exotic element synthesis.",
+    "type": "exotic",
+    "inputs": [
+        "Watts",
+        "Unstable Elemental Essence"
+    ],
+    "outputs": [
+        "Stable Elemental Matrix"
+    ],
+    "specs": [
+        "*150w* + *3 Unstable Elemental Essence* + *10s* -> *1 Stable Elemental Matrix*",
+        "Stores *2 Stable Elemental Matrix*"
+    ],
+    "cost": 65000,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Stable Elemental Matrix",
+                    "amount": 1,
+                    "limit": 2
+                }
+            ],
+            "time": {
+                "seconds": 10
+            },
+            "requires": [
+                {
+                    "material": "Watts",
+                    "amount": 150
+                },
+                {
+                    "material": "Unstable Elemental Essence",
+                    "amount": 3
+                }
+            ]
+        }
+    ]
+}

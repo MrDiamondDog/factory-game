@@ -1,0 +1,28 @@
+{
+    "name": "Solar Panel Array",
+    "description": "A large array of solar panels that gather a good amount of energy",
+    "type": "energy",
+    "outputs": [
+        "Watts"
+    ],
+    "specs": [
+        "*7s* -> *15w*",
+        "Stores *100w*",
+        "Stores *100 Watts*"
+    ],
+    "cost": 1000,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Watts",
+                    "amount": 15,
+                    "limit": 100
+                }
+            ],
+            "time": {
+                "seconds": 7
+            }
+        }
+    ]
+}

@@ -1,10 +1,14 @@
 import { Storage } from "@economy/storage";
 
-import { CanvasObject, ObjectOptions, Vec2 } from "./canvas";
+import { CanvasObject,
+    ObjectOptions,
+    Vec2 } from "./canvas";
 
-export const FakeMaterials = ["Any", "Watts"];
+export const FakeMaterials = ["Any",
+    "Watts"];
 
-export const MaterialPrices: Record<string, number> = {
+export const MaterialPrices: Record<string,
+number> = {
     "Iron Ore": 10,
     "Iron Ingot": 25,
     "Copper Ore": 10,
@@ -28,6 +32,19 @@ export const MaterialPrices: Record<string, number> = {
     "Electric Motor": 175,
     "Advanced Circuit": 250,
     "Robotic Component": 500,
+    "Uranium Ore": 100,
+    "Thorium Ore": 90,
+    "Thorium Ingot": 150,
+    "Uranium Ingot": 200,
+    "Uranium-235": 300,
+    "Uranium-235 Fuel Rod": 500,
+    "Quantum Energy Core": 1000,
+    "Raw Earth Core Sample": 200,
+    "Refined Earth Mineral Deposit": 300,
+    "Rare Earth Mineral": 600,
+    "Unstable Elemental Essence": 500,
+    "Stable Elemental Matrix": 750,
+    "Exotic Element": 1200
 };
 
 export type FactoryDefinition = {

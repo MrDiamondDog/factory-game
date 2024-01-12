@@ -1,4 +1,4 @@
-import { queryAll } from "@util/dom";
+import { query, queryAll } from "@util/dom";
 import { EventEmitter } from "@util/eventEmitter";
 
 export type Tool = "Cursor" | "Select";
@@ -6,6 +6,7 @@ export type Tool = "Cursor" | "Select";
 export let currentTool = "Cursor" as Tool;
 export const onToolChange = new EventEmitter<void>();
 
+query("#tools").style.display = "none";
 const buttons = queryAll<HTMLButtonElement>("#tools button");
 
 buttons.forEach(button => {

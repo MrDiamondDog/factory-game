@@ -1,0 +1,27 @@
+{
+    "name": "Uranium Mining Facility",
+    "description": "A facility built over a giant uranium deposit.",
+    "type": "gathering",
+    "outputs": [
+        "Uranium Ore"
+    ],
+    "specs": [
+        "*10s* -> *3 Uranium Ore*",
+        "Stores *50 Uranium Ore*"
+    ],
+    "cost": 5000,
+    "produces": [
+        {
+            "materials": [
+                {
+                    "material": "Uranium Ore",
+                    "amount": 3,
+                    "limit": 50
+                }
+            ],
+            "time": {
+                "seconds": 10
+            }
+        }
+    ]
+}
