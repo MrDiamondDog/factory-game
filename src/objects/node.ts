@@ -191,9 +191,8 @@ export function nodeInit(self: NodeOptions) {
             setMoney(money - self.cost);
 
             // up the price to balance the economy (fuck you kreegle)
-            if (self.cost < 200) self.cost = Math.round(self.cost * 2);
-            if (self.cost < 500) self.cost = Math.round(self.cost * 1.5);
-            else self.cost = Math.round(self.cost * 1.2);
+            if (self.cost < 500) self.cost = Math.round(self.cost * 1.35);
+            else self.cost = Math.round(self.cost * 1.1);
 
             queryAll<HTMLButtonElement>(".node-add").forEach(node => node.disabled = true);
             queryAll<HTMLButtonElement>(".node-buy").forEach(node => node.disabled = true);

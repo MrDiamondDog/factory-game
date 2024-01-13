@@ -5,7 +5,7 @@ import { EventEmitter } from "@util/eventEmitter";
 
 import { prettify } from "../util/string";
 
-export let money = 100000000;
+export let money = 1000;
 
 export function setMoney(newMoney: number) {
     money = newMoney;

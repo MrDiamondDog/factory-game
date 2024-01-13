@@ -1,6 +1,6 @@
-import { createObject, defineObject, objects } from "@canvas/object";
+import { createObject, defineObject, objects, registeredObjects } from "@canvas/object";
 import { FPS, setDebug } from "@canvas/renderer";
-import { money, setMoney } from "@economy/money";
+import { money, onMoneyChange, setMoney } from "@economy/money";
 import { addToStorage, clearStorage, setStorage, storage } from "@economy/storage";
 import { CanvasNode, ExportedData, ExportedFactory, FactoryDefinition, FakeMaterials, MaterialPrices, NodeOptions } from "@type/factory";
 import { downloadFile, query } from "@util/dom";
@@ -75,13 +75,13 @@ export async function loadMachines() {
                 }
 
                 if (machine.name === "Market") {
-                    if (node.inputs[1].material === "Any") return;
+                    if (FakeMaterials.includes(node.inputs[1].material)) return;
 
                     if (node.inputs[0].stored >= 5 && node.inputs[1].stored >= 1) {
                         node.inputs[0].stored -= 5;
                         node.inputs[1].stored--;
 
-                        const { material } = node.inputs[0];
+                        const { material } = node.inputs[1];
                         const price = MaterialPrices[material];
                         if (!price) throw new Error(`No price for material ${material}`);
 
@@ -175,11 +175,14 @@ export function save() {
         return definition;
     });
 
-    const out = {
+    const out: ExportedData = {
         objects: exports,
         storage,
         money,
-        version
+        version,
+        factoryPrices: Object.fromEntries(
+            registeredObjects.filter((obj: any) => obj.cost).map((node: NodeOptions) => [node.name, node.cost])
+        )
     };
 
     const json = JSON.stringify(out);
@@ -247,6 +250,14 @@ export function load(data: ExportedData) {
     // load storage
     setStorage(storage);
     setMoney(data.money);
+
+    // load prices
+    for (const [name, price] of Object.entries(data.factoryPrices)) {
+        const node = registeredObjects.find((obj: any) => obj.name === name) as NodeOptions;
+        if (!node) continue;
+        node.cost = price;
+    }
+    onMoneyChange.emit("change", money);
 
     // load secrets
     if (isDebug) setDebug(isDebug);

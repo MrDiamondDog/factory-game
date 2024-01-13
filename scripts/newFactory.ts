@@ -102,7 +102,10 @@ async function ask(question: string, optional: boolean = true): Promise<string> 
 
         produce.materials.forEach((material: any) => {
             if (!material.limit) return;
-            if (material.material === "Watts") json.specs.push(`Stores *${material.limit}w*`);
+            if (material.material === "Watts") {
+                json.specs.push(`Stores *${material.limit}w*`);
+                return;
+            }
             json.specs.push(`Stores *${material.limit} ${material.material}*`);
         });
     }

@@ -6,7 +6,7 @@
         "Uranium Ore"
     ],
     "specs": [
-        "*10s* -> *3 Uranium Ore*",
+        "*10s* -> *2 Uranium Ore*",
         "Stores *50 Uranium Ore*"
     ],
     "cost": 5000,

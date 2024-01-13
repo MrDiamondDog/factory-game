@@ -7,44 +7,44 @@ import { CanvasObject,
 export const FakeMaterials = ["Any",
     "Watts"];
 
-export const MaterialPrices: Record<string,
-number> = {
-    "Iron Ore": 10,
-    "Iron Ingot": 25,
-    "Copper Ore": 10,
-    "Copper Ingot": 25,
-    "Copper Wire": 2,
-    "Coal": 5,
-    "Sand": 5,
-    "Silicon Ingot": 50,
-    "Silicon Sheet": 25,
-    "Silicon Wafer": 25,
-    "Zinc Ore": 25,
-    "Zinc Ingot": 50,
-    "Gold Ore": 100,
-    "Refined Gold": 150,
-    "Molten Steel": 50,
-    "Steel Ingot": 150,
+export const MaterialPrices: Record<string, number> = {
+    "Iron Ore": 25,
+    "Iron Ingot": 50,
+    "Copper Ore": 20,
+    "Copper Ingot": 30,
+    "Copper Wire": 10,
+    "Coal": 15,
+    "Sand": 10,
+    "Silicon Ingot": 100,
+    "Silicon Sheet": 50,
+    "Silicon Wafer": 50,
+    "Zinc Ore": 75,
+    "Zinc Ingot": 100,
+    "Gold Ore": 75,
+    "Refined Gold": 200,
+    "Molten Steel": 100,
+    "Steel Ingot": 350,
     "Raw Carbon": 25,
-    "Refined Carbon": 50,
-    "Battery": 75,
-    "Basic Circuit": 125,
-    "Electric Motor": 175,
-    "Advanced Circuit": 250,
-    "Robotic Component": 500,
+    "Refined Carbon": 150,
+    "Battery": 200,
+    "Basic Circuit": 250,
+    "Electric Motor": 400,
+    "Advanced Circuit": 750,
+    "Robotic Component": 1000,
     "Uranium Ore": 100,
-    "Thorium Ore": 90,
-    "Thorium Ingot": 150,
-    "Uranium Ingot": 200,
-    "Uranium-235": 300,
-    "Uranium-235 Fuel Rod": 500,
-    "Quantum Energy Core": 1000,
-    "Raw Earth Core Sample": 200,
-    "Refined Earth Mineral Deposit": 300,
-    "Rare Earth Mineral": 600,
-    "Unstable Elemental Essence": 500,
-    "Stable Elemental Matrix": 750,
-    "Exotic Element": 1200
+    "Thorium Ore": 75,
+    "Thorium Ingot": 500,
+    "Uranium Ingot": 750,
+    "Uranium-235": 1200,
+    "Uranium-235 Fuel Rod": 1500,
+    "Quantum Energy Core": 2000,
+    "Raw Earth Core Sample": 300,
+    "Refined Earth Mineral Deposit": 500,
+    "Rare Earth Mineral": 1000,
+    "Unstable Elemental Essence": 1000,
+    "Stable Elemental Matrix": 1200,
+    "Exotic Element": 1750,
+    "Hyper-Advanced Nanomaterial": 2000
 };
 
 export type FactoryDefinition = {
@@ -131,6 +131,7 @@ export type ExportedData = {
     objects: ExportedFactory[];
     storage: Storage;
     money: number;
+    factoryPrices: Record<string, number>;
     DEBUG?: boolean;
     TRANS?: boolean;
 };

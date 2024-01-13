@@ -13,8 +13,8 @@
             "@type/*": ["./src/type/*"],
             "@canvas/*": ["./src/canvas/*"],
             "@objects/*": ["./src/objects/*"],
-            "@/*": ["./src/*"],
-            "@economy/*": ["./src/economy/*"]
+            "@economy/*": ["./src/economy/*"],
+            "@/*": ["./src/*"]
         },
         "allowSyntheticDefaultImports": true
     },

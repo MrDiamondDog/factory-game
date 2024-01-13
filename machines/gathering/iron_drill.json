@@ -9,7 +9,7 @@
         "Iron Ore"
     ],
     "specs": [
-        "*10w* + *5s* -> *2 Iron Ore*",
+        "*10w* + *5s* -> *5 Iron Ore*",
         "Stores *50 Iron Ore*"
     ],
     "cost": 300,
@@ -18,7 +18,7 @@
             "materials": [
                 {
                     "material": "Iron Ore",
-                    "amount": 2,
+                    "amount": 5,
                     "limit": 50
                 }
             ],

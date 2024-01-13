@@ -10,7 +10,7 @@
         "Refined Gold"
     ],
     "specs": [
-        "*40w* + *5 Gold Ore* + *5s* -> *1 Refined Gold*",
+        "*20w* + *5 Gold Ore* + *5s* -> *1 Refined Gold*",
         "Stores *10 Refined Gold*"
     ],
     "cost": 5000,
@@ -33,7 +33,7 @@
                 },
                 {
                     "material": "Watts",
-                    "amount": 40
+                    "amount": 20
                 }
             ]
         }

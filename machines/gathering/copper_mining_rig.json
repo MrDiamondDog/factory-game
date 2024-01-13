@@ -9,7 +9,7 @@
         "Copper Ore"
     ],
     "specs": [
-        "*5w* + *5s* -> *2 Copper Ore*",
+        "*5w* + *5s* -> *5 Copper Ore*",
         "Stores *50 Copper Ore*"
     ],
     "cost": 100,
@@ -18,7 +18,7 @@
             "materials": [
                 {
                     "material": "Copper Ore",
-                    "amount": 2,
+                    "amount": 5,
                     "limit": 50
                 }
             ],

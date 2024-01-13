@@ -10,7 +10,7 @@
         "Uranium-235"
     ],
     "specs": [
-        "*25w* + *3 Uranium Ingot* + *30s* -> *1 Uranium-235*",
+        "*25w* + *3 Uranium Ingot* + *10s* -> *1 Uranium-235*",
         "Stores *10 Uranium-235*"
     ],
     "cost": 8000,
@@ -24,7 +24,7 @@
                 }
             ],
             "time": {
-                "seconds": 30
+                "seconds": 10
             },
             "requires": [
                 {

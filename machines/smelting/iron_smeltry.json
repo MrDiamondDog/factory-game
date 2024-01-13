@@ -10,7 +10,7 @@
         "Iron Ingot"
     ],
     "specs": [
-        "*5 Iron Ore* + *15w* + *2s* -> *1 Iron Ingot*",
+        "*5 Iron Ore* + *10w* + *2s* -> *1 Iron Ingot*",
         "Stores *10 Iron Ingot*"
     ],
     "cost": 250,
@@ -33,7 +33,7 @@
                 },
                 {
                     "material": "Watts",
-                    "amount": 15
+                    "amount": 10
                 }
             ]
         }

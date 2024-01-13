@@ -1,12 +1,14 @@
+import { money, setMoney } from "@economy/money";
 import { ContextMenuOption, Vec2 } from "@type/canvas";
 import { CanvasNode, Connection } from "@type/factory";
+import { Log } from "@util/logger";
 
 import { Mouse } from "./input";
 import { deleteObject } from "./object";
 
 export const ctxMenu: ContextMenuOption[] = [
     {
-        name: "Delete Node",
+        name: "Sell Node",
         action() {
             const hovering = Mouse.hovering as CanvasNode;
             hovering.backConnections.forEach(connection => {
@@ -18,6 +20,7 @@ export const ctxMenu: ContextMenuOption[] = [
                     connection.to.node.inputs[connection.to.index].stored = 0;
                 }
             });
+            setMoney(money + Math.round(hovering.cost / 2));
             deleteObject(hovering);
             Mouse.hovering = undefined;
         },
@@ -30,13 +33,18 @@ export const ctxMenu: ContextMenuOption[] = [
         action() {
             const connection = Mouse.hovering as Connection;
 
-            if (connection.to.node.inputs[connection.to.index].any) {
+            Log("deleting connection", connection.to.node.backConnections.length);
+            if (
+                connection.to.node.inputs[connection.to.index].any &&
+                connection.to.node.backConnections.filter(bConn => bConn.to.index === connection.to.index).length === 1
+            ) {
                 connection.to.node.inputs[connection.to.index].material = "Any";
                 connection.to.node.inputs[connection.to.index].stored = 0;
             }
 
             connection.from.node.connections.splice(connection.from.index, 1);
-            connection.to.node.backConnections.splice(connection.to.index, 1);
+            connection.to.node.backConnections =
+                connection.to.node.backConnections.filter(bConn => bConn.to.index !== connection.to.index);
 
             Mouse.hovering = undefined;
         },

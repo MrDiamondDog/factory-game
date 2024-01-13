@@ -6,9 +6,8 @@
         "Watts"
     ],
     "specs": [
-        "*7s* -> *15w*",
-        "Stores *100w*",
-        "Stores *100 Watts*"
+        "*10s* -> *10w*",
+        "Stores *100w*"
     ],
     "cost": 1000,
     "produces": [
@@ -16,12 +15,12 @@
             "materials": [
                 {
                     "material": "Watts",
-                    "amount": 15,
+                    "amount": 10,
                     "limit": 100
                 }
             ],
             "time": {
-                "seconds": 7
+                "seconds": 10
             }
         }
     ]

@@ -7,7 +7,7 @@
         "Any"
     ],
     "specs": [
-        "*5w* -> Sells *1* item"
+        "*2w* -> Sells *1* item"
     ],
     "cost": 500
 }

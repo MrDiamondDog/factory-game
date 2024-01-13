@@ -11,7 +11,7 @@
         "Uranium-235 Fuel Rod"
     ],
     "specs": [
-        "*50w* + *2 Iron Ingot* + *5 Uranium-235* + *15s* -> *1 Uranium-235 Fuel Rod*",
+        "*50w* + *2 Iron Ingot* + *5 Uranium-235* + *5s* -> *1 Uranium-235 Fuel Rod*",
         "Stores *2 Uranium-235 Fuel Rod*"
     ],
     "cost": 10000,
@@ -25,7 +25,7 @@
                 }
             ],
             "time": {
-                "seconds": 15
+                "seconds": 5
             },
             "requires": [
                 {

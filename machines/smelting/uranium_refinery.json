@@ -10,7 +10,7 @@
         "Uranium Ingot"
     ],
     "specs": [
-        "*50w* + *10 Uranium Ore* + *10s* -> *1 Uranium Ingot*",
+        "*20w* + *5 Uranium Ore* + *3s* -> *1 Uranium Ingot*",
         "Stores *5 Uranium Ingot*"
     ],
     "cost": 7500,
@@ -24,16 +24,16 @@
                 }
             ],
             "time": {
-                "seconds": 10
+                "seconds": 3
             },
             "requires": [
                 {
                     "material": "Watts",
-                    "amount": 50
+                    "amount": 20
                 },
                 {
                     "material": "Uranium Ore",
-                    "amount": 10
+                    "amount": 5
                 }
             ]
         }
