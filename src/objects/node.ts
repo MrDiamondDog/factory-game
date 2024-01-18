@@ -2,6 +2,8 @@ import { Camera } from "@canvas/camera";
 import { ctxMenuOpen } from "@canvas/contextmenu";
 import { Mouse } from "@canvas/input";
 import { createObject, objects } from "@canvas/object";
+import { FPS } from "@canvas/renderer";
+import { clearTooltip, setTooltip } from "@canvas/tooltip";
 import { money, onMoneyChange, setMoney } from "@economy/money";
 import { Vec2 } from "@type/canvas";
 import { CanvasNode, NodeOptions } from "@type/factory";
@@ -64,8 +66,18 @@ export function nodeDraw(self: CanvasNode) {
         ctx.fillRect(pos.x - 3, pos.y - 3, size.x + 6, size.y + 6);
 
         Mouse.hovering = self;
+
+        setTooltip(`
+${self.name}
+${self.specs.map(spec => "- " + spec.replaceAll(/\*(.*?)\*/g, "$1").replaceAll("->", "→")).join("\n")}
+${self.vars?.cooldowns && Object.keys(self.vars.cooldowns).length > 0 ?
+        "Cooldowns:" + Object.keys(self.vars.cooldowns).map(key => key === "[object Object]" ? "" : `${key}: ${(self.vars.cooldowns[key] / FPS).toFixed(1)}s`).join("\n")
+        : ""}
+`.trim(), self.id);
+
     } else if (Mouse.hovering === self && !ctxMenuOpen) {
         Mouse.hovering = undefined;
+        clearTooltip(self.id);
     }
 
     ctx.fillStyle = colors.backgroundSecondary;
@@ -122,6 +134,10 @@ export function nodeDraw(self: CanvasNode) {
             ctx.fillStyle = colors.text;
             ctx.strokeStyle = colors.text;
             drawCircle(ioPos, 7);
+
+            setTooltip(`${self.inputs[i].material} (${self.inputs[i].stored})`, self.inputs[i].id);
+        } else {
+            clearTooltip(self.inputs[i].id);
         }
 
         ctx.fillStyle = colors.text;
@@ -149,6 +165,10 @@ export function nodeDraw(self: CanvasNode) {
             ctx.fillStyle = colors.text;
             ctx.strokeStyle = colors.text;
             drawCircle(ioPos, 7);
+
+            setTooltip(`${self.outputs[i].material} (${self.outputs[i].stored})`, self.outputs[i].id);
+        } else {
+            clearTooltip(self.outputs[i].id);
         }
 
         ctx.fillStyle = colors.text;
@@ -245,6 +265,9 @@ export function nodeCreatedInit(self: CanvasNode) {
     };
     self.connections = [];
     self.backConnections = [];
+
+    self.inputs.forEach(io => io.id = crypto.randomUUID());
+    self.outputs.forEach(io => io.id = crypto.randomUUID());
 
     Mouse.listener.on("down", () => {
         if (!Mouse.leftDown || Mouse.dragging) return;

@@ -9,6 +9,7 @@ import { canvas, colors, ctx } from "@/constants";
 import { openCtxMenu } from "./contextmenu";
 import { Mouse } from "./input";
 import { objects } from "./object";
+import { renderTooltip } from "./tooltip";
 
 export let DEBUG = false;
 export const FPS = 60;
@@ -94,8 +95,10 @@ function draw() {
     for (const object of objects) {
         object.draw(object);
     }
+    renderTooltip();
 
     Camera.end();
+
 
     if (DEBUG) {
         ctx.fillStyle = colors.text;

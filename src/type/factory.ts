@@ -69,6 +69,7 @@ export type MaterialIO = {
     material?: string;
     any?: boolean;
     stored: number;
+    id?: string;
 };
 
 export type RecipeMaterial = {

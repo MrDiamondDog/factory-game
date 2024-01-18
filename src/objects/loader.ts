@@ -95,16 +95,6 @@ export async function loadMachines() {
                 outer:
                 for (const produce of machine.produces) {
                     const mat = produce.materials[0];
-                    // handle cooldown if applicable
-                    if (produce.time) {
-                        const cooldown = node.vars.cooldowns[mat.material];
-                        if (cooldown > 0) {
-                            node.vars.cooldowns[mat.material]--;
-                            continue;
-                        }
-                    }
-                    node.vars.cooldowns[mat.material] =
-                        produce.time ? produce.time.seconds ? produce.time.seconds * FPS : produce.time.ticks : 0;
 
                     // check if output is full
                     for (const material of produce.materials) {
@@ -121,6 +111,18 @@ export async function loadMachines() {
                         });
                         if (!hasRequired) continue;
                     }
+
+
+                    // handle cooldown if applicable
+                    if (produce.time) {
+                        const cooldown = node.vars.cooldowns[mat.material];
+                        if (cooldown > 0) {
+                            node.vars.cooldowns[mat.material]--;
+                            continue;
+                        }
+                    }
+                    node.vars.cooldowns[mat.material] =
+                        produce.time ? produce.time.seconds ? produce.time.seconds * FPS : produce.time.ticks : 0;
 
                     // remove required items
                     if (produce.requires) {
